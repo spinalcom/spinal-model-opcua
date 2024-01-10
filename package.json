@@ -1,0 +1,23 @@
+{
+	"name": "spinal-model-opcua",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/index.js",
+	"scripts": {
+		"clean": "rimraf dist",
+		"build": "npm run clean && tsc",
+		"dev": "npm run clean && && tsc --watch & nodemon dist",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"spinal-core-connectorjs_type": "git+https://github.com/spinalcom/spinal-core-connectorjs_type.git",
+		"spinal-model-graph": "git+https://github.com/spinalcom/spinal-model-graph.git",
+		"uuid": "^9.0.1"
+	},
+	"devDependencies": {
+		"rimraf": "^5.0.5"
+	}
+}
