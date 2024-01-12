@@ -16,6 +16,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             context: new spinal_core_connectorjs_type_1.Ptr(context),
             graph: new spinal_core_connectorjs_type_1.Ptr(graph),
             servers: new spinal_core_connectorjs_type_1.Lst(servers),
+            creation: Date.now(),
         });
     }
     getGraph() {

@@ -25,6 +25,7 @@ class SpinalOPCUADiscoverModel extends Model {
 			context: new Ptr(context),
 			graph: new Ptr(graph),
 			servers: new Lst(servers),
+			creation: Date.now(),
 		});
 	}
 
