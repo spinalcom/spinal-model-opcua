@@ -85,7 +85,7 @@ class SpinalOPCUADiscoverModel extends Model {
 		});
 	}
 
-	public removeToGraph(): Promise<boolean> {
+	public removeFromGraph(): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
 				if (organ.discover) {
@@ -105,6 +105,10 @@ class SpinalOPCUADiscoverModel extends Model {
 				}
 			});
 		});
+	}
+
+	public changeState(state: OPCUA_ORGAN_STATES) {
+		this.state.set(state);
 	}
 }
 

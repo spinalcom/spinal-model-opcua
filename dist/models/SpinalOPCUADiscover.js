@@ -74,7 +74,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             });
         });
     }
-    removeToGraph() {
+    removeFromGraph() {
         return new Promise((resolve, reject) => {
             this.getOrgan().then((organ) => {
                 if (organ.discover) {
@@ -94,6 +94,9 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
                 }
             });
         });
+    }
+    changeState(state) {
+        this.state.set(state);
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;
