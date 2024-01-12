@@ -96,7 +96,8 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         });
     }
     changeState(state) {
-        this.state.set(state);
+        const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
+        this.state.set(Array.from(choicesSet).indexOf(state));
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;

@@ -108,7 +108,9 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public changeState(state: OPCUA_ORGAN_STATES) {
-		this.state.set(state);
+		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));
+
+		this.state.set(Array.from(choicesSet).indexOf(state));
 	}
 }
 
