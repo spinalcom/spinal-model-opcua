@@ -5,5 +5,6 @@ export declare enum OPCUA_ORGAN_STATES {
     discovered = "discovered",
     creating = "creating",
     created = "created",
-    error = "error"
+    error = "error",
+    timeout = "timeout"
 }

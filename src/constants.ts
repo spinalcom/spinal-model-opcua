@@ -7,4 +7,5 @@ export enum OPCUA_ORGAN_STATES {
 	creating = "creating",
 	created = "created",
 	error = "error",
+	timeout = "timeout",
 }

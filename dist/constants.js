@@ -10,5 +10,6 @@ var OPCUA_ORGAN_STATES;
     OPCUA_ORGAN_STATES["creating"] = "creating";
     OPCUA_ORGAN_STATES["created"] = "created";
     OPCUA_ORGAN_STATES["error"] = "error";
+    OPCUA_ORGAN_STATES["timeout"] = "timeout";
 })(OPCUA_ORGAN_STATES || (exports.OPCUA_ORGAN_STATES = OPCUA_ORGAN_STATES = {}));
 //# sourceMappingURL=constants.js.map
