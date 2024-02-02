@@ -24,7 +24,9 @@ class SpinalOPCUADiscoverModel extends Model {
 			organ: new Ptr(organ),
 			context: new Ptr(context),
 			graph: new Ptr(graph),
-			servers: new Lst(servers),
+			treeDiscovered: "",
+			treeToCreate: "",
+			// servers: new Lst(servers),
 			creation: Date.now(),
 		});
 	}
@@ -59,9 +61,9 @@ class SpinalOPCUADiscoverModel extends Model {
 		});
 	}
 
-	public getServers(): spinal.Lst {
-		return this.servers;
-	}
+	// public getServers(): spinal.Lst {
+	// 	return this.servers;
+	// }
 
 	public addToGraph(): Promise<SpinalOPCUADiscoverModel> {
 		return new Promise((resolve, reject) => {
@@ -112,6 +114,20 @@ class SpinalOPCUADiscoverModel extends Model {
 		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));
 
 		this.state.set(Array.from(choicesSet).indexOf(state));
+	}
+
+	public getTreeDiscovered(): { [key: string]: any } {
+		const tree = this.treeDiscovered.get();
+		if (tree.length === 0) return {};
+
+		return JSON.parse(tree);
+	}
+
+	public getTreeToCreate(): { [key: string]: any } {
+		const tree = this.treeToCreate.get();
+		if (tree.length === 0) return {};
+
+		return JSON.parse(tree);
 	}
 }
 

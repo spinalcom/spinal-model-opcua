@@ -15,7 +15,9 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             organ: new spinal_core_connectorjs_type_1.Ptr(organ),
             context: new spinal_core_connectorjs_type_1.Ptr(context),
             graph: new spinal_core_connectorjs_type_1.Ptr(graph),
-            servers: new spinal_core_connectorjs_type_1.Lst(servers),
+            treeDiscovered: "",
+            treeToCreate: "",
+            // servers: new Lst(servers),
             creation: Date.now(),
         });
     }
@@ -49,9 +51,9 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             }
         });
     }
-    getServers() {
-        return this.servers;
-    }
+    // public getServers(): spinal.Lst {
+    // 	return this.servers;
+    // }
     addToGraph() {
         return new Promise((resolve, reject) => {
             this.getOrgan().then((organ) => {
@@ -99,6 +101,18 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     changeState(state) {
         const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
         this.state.set(Array.from(choicesSet).indexOf(state));
+    }
+    getTreeDiscovered() {
+        const tree = this.treeDiscovered.get();
+        if (tree.length === 0)
+            return {};
+        return JSON.parse(tree);
+    }
+    getTreeToCreate() {
+        const tree = this.treeToCreate.get();
+        if (tree.length === 0)
+            return {};
+        return JSON.parse(tree);
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;
