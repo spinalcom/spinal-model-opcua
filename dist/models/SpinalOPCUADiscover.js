@@ -5,7 +5,8 @@ const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
 class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
-    constructor(graph, context, organ, network, servers) {
+    // constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
+    constructor(graph, context, organ, network) {
         super();
         const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
         this.add_attr({

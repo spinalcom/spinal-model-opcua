@@ -1,5 +1,4 @@
 import { Model } from "spinal-core-connectorjs_type";
-import { INetwork } from "../interfaces";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
@@ -9,7 +8,7 @@ declare class SpinalOPCUADiscoverModel extends Model {
     organ: spinal.Ptr<SpinalOrganOPCUA>;
     context: spinal.Ptr<SpinalContext>;
     servers: spinal.Lst<any>;
-    constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]);
+    constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: IServer);
     getGraph(): Promise<SpinalGraph>;
     getOrgan(): Promise<SpinalOrganOPCUA>;
     getContext(): Promise<SpinalContext>;

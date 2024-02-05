@@ -12,7 +12,8 @@ class SpinalOPCUADiscoverModel extends Model {
 	context: spinal.Ptr<SpinalContext>;
 	servers: spinal.Lst<any>;
 
-	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
+	// constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
+	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: IServer) {
 		super();
 
 		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));
