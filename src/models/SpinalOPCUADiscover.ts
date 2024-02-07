@@ -1,6 +1,5 @@
 import { spinalCore, Model, Ptr, Lst, Choice } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
-import { INetwork } from "../interfaces";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
@@ -118,7 +117,9 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public getTreeDiscovered(): { [key: string]: any } {
-		const tree = this.treeDiscovered.get();
+		const base64 = this.treeDiscovered.get();
+		const tree = Buffer.from(base64, "base64").toString("utf-8");
+
 		if (tree.length === 0) return {};
 
 		return JSON.parse(tree);

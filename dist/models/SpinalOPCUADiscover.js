@@ -104,7 +104,8 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         this.state.set(Array.from(choicesSet).indexOf(state));
     }
     getTreeDiscovered() {
-        const tree = this.treeDiscovered.get();
+        const base64 = this.treeDiscovered.get();
+        const tree = Buffer.from(base64, "base64").toString("utf-8");
         if (tree.length === 0)
             return {};
         return JSON.parse(tree);
