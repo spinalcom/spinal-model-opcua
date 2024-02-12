@@ -62,13 +62,13 @@ class SpinalOPCUADiscoverModel extends Model {
 		});
 	}
 
-	public async setTreeDiscovered(json: any): Promise<void> {
-		const base64 = await this.convertToBase64(json);
+	public setTreeDiscovered(json: any) {
+		const base64 = this.convertToBase64(json);
 		this.treeDiscovered.set(base64);
 	}
 
-	public async setTreeToCreate(json: any): Promise<void> {
-		const base64 = await this.convertToBase64(json);
+	public setTreeToCreate(json: any) {
+		const base64 = this.convertToBase64(json);
 		this.treeToCreate.set(base64);
 	}
 
@@ -145,18 +145,20 @@ class SpinalOPCUADiscoverModel extends Model {
 		return JSON.parse(tree);
 	}
 
-	private convertToBase64(tree: any) {
-		return new Promise((resolve, reject) => {
-			const treeString = JSON.stringify(tree);
-			zlib.deflate(treeString, (err, buffer) => {
-				if (!err) {
-					const base64 = buffer.toString("base64");
-					return resolve(base64);
-				}
+	private convertToBase64(tree: any): string {
+		return Buffer.from(JSON.stringify(tree)).toString("base64");
 
-				return reject();
-			});
-		});
+		// return new Promise((resolve, reject) => {
+		// 	const treeString = JSON.stringify(tree);
+		// 	zlib.deflate(treeString, (err, buffer) => {
+		// 		if (!err) {
+		// 			const base64 = buffer.toString("base64");
+		// 			return resolve(base64);
+		// 		}
+
+		// 		return reject();
+		// 	});
+		// });
 	}
 }
 
