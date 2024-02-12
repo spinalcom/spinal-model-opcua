@@ -1,9 +1,19 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpinalOPCUADiscoverModel = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
+const zlib = require("zlib");
 class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     // constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
     constructor(graph, context, organ, network) {
@@ -50,6 +60,18 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             catch (error) {
                 reject(error);
             }
+        });
+    }
+    setTreeDiscovered(json) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const base64 = yield this.convertToBase64(json);
+            this.treeDiscovered.set(base64);
+        });
+    }
+    setTreeToCreate(json) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const base64 = yield this.convertToBase64(json);
+            this.treeToCreate.set(base64);
         });
     }
     // public getServers(): spinal.Lst {
@@ -111,10 +133,23 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         return JSON.parse(tree);
     }
     getTreeToCreate() {
-        const tree = this.treeToCreate.get();
+        const base64 = this.treeToCreate.get();
+        const tree = Buffer.from(base64, "base64").toString("utf-8");
         if (tree.length === 0)
             return {};
         return JSON.parse(tree);
+    }
+    convertToBase64(tree) {
+        return new Promise((resolve, reject) => {
+            const treeString = JSON.stringify(tree);
+            zlib.deflate(treeString, (err, buffer) => {
+                if (!err) {
+                    const base64 = buffer.toString("base64");
+                    return resolve(base64);
+                }
+                return reject();
+            });
+        });
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;

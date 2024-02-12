@@ -1,6 +1,6 @@
 {
 	"name": "spinal-model-opcua",
-	"version": "1.0.1",
+	"version": "1.1.1",
 	"description": "",
 	"main": "dist/index.js",
 	"scripts": {
@@ -16,7 +16,8 @@
 		"atob": "^2.1.2",
 		"spinal-core-connectorjs_type": "git+https://github.com/spinalcom/spinal-core-connectorjs_type.git",
 		"spinal-model-graph": "git+https://github.com/spinalcom/spinal-model-graph.git",
-		"uuid": "^9.0.1"
+		"uuid": "^9.0.1",
+		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.16",

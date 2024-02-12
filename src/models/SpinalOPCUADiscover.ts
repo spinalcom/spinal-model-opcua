@@ -4,6 +4,7 @@ import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
+import * as zlib from "zlib";
 
 class SpinalOPCUADiscoverModel extends Model {
 	graph: spinal.Ptr<SpinalGraph>;
@@ -59,6 +60,16 @@ class SpinalOPCUADiscoverModel extends Model {
 				reject(error);
 			}
 		});
+	}
+
+	public async setTreeDiscovered(json: any): Promise<void> {
+		const base64 = await this.convertToBase64(json);
+		this.treeDiscovered.set(base64);
+	}
+
+	public async setTreeToCreate(json: any): Promise<void> {
+		const base64 = await this.convertToBase64(json);
+		this.treeToCreate.set(base64);
 	}
 
 	// public getServers(): spinal.Lst {
@@ -126,10 +137,26 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public getTreeToCreate(): { [key: string]: any } {
-		const tree = this.treeToCreate.get();
+		const base64 = this.treeToCreate.get();
+		const tree = Buffer.from(base64, "base64").toString("utf-8");
+
 		if (tree.length === 0) return {};
 
 		return JSON.parse(tree);
+	}
+
+	private convertToBase64(tree: any) {
+		return new Promise((resolve, reject) => {
+			const treeString = JSON.stringify(tree);
+			zlib.deflate(treeString, (err, buffer) => {
+				if (!err) {
+					const base64 = buffer.toString("base64");
+					return resolve(base64);
+				}
+
+				return reject();
+			});
+		});
 	}
 }
 
