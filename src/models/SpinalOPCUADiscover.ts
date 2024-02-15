@@ -1,10 +1,11 @@
-import { spinalCore, Model, Ptr, Lst, Choice } from "spinal-core-connectorjs_type";
+import { spinalCore, Model, Ptr, Lst, Choice, Str } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 import * as zlib from "zlib";
+import { count } from "console";
 
 class SpinalOPCUADiscoverModel extends Model {
 	graph: spinal.Ptr<SpinalGraph>;
@@ -128,7 +129,7 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public async getTreeDiscovered(): Promise<{ [key: string]: any }> {
-		await this.waitModelReady();
+		await this.waitModelReady(this.treeDiscovered);
 
 		const base64 = this.treeDiscovered.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
@@ -139,7 +140,7 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public async getTreeToCreate(): Promise<{ [key: string]: any }> {
-		await this.waitModelReady();
+		await this.waitModelReady(this.treeToCreate);
 
 		const base64 = this.treeToCreate.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
@@ -165,19 +166,21 @@ class SpinalOPCUADiscoverModel extends Model {
 		// });
 	}
 
-	private waitModelReady() {
-		return new Promise((resolve, reject) => {
+	private waitModelReady(model: Str) {
+		return new Promise((resolve) => {
+			let time = 0;
 			const wait = () => {
 				setTimeout(() => {
+					const text = model.get();
 					//@ts-ignore
-					if (FileSystem._sig_server === true) {
+					if ((text && text.length > 0) || time >= 2000) {
 						resolve(true);
 					} else {
+						time += 300;
 						wait();
 					}
 				}, 300);
 			};
-
 			wait();
 		});
 	}

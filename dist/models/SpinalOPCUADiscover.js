@@ -122,7 +122,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
     getTreeDiscovered() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.waitModelReady();
+            yield this.waitModelReady(this.treeDiscovered);
             const base64 = this.treeDiscovered.get();
             const tree = Buffer.from(base64, "base64").toString("utf-8");
             if (tree.length === 0)
@@ -132,7 +132,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
     getTreeToCreate() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.waitModelReady();
+            yield this.waitModelReady(this.treeToCreate);
             const base64 = this.treeToCreate.get();
             const tree = Buffer.from(base64, "base64").toString("utf-8");
             if (tree.length === 0)
@@ -153,15 +153,18 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         // 	});
         // });
     }
-    waitModelReady() {
-        return new Promise((resolve, reject) => {
+    waitModelReady(model) {
+        return new Promise((resolve) => {
+            let time = 0;
             const wait = () => {
                 setTimeout(() => {
+                    const text = model.get();
                     //@ts-ignore
-                    if (FileSystem._sig_server === true) {
+                    if ((text && text.length > 0) || time >= 2000) {
                         resolve(true);
                     }
                     else {
+                        time += 300;
                         wait();
                     }
                 }, 300);
