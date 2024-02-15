@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpinalOPCUADiscoverModel = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
@@ -112,18 +121,24 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         this.state.set(Array.from(choicesSet).indexOf(state));
     }
     getTreeDiscovered() {
-        const base64 = this.treeDiscovered.get();
-        const tree = Buffer.from(base64, "base64").toString("utf-8");
-        if (tree.length === 0)
-            return {};
-        return JSON.parse(tree);
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.waitModelReady();
+            const base64 = this.treeDiscovered.get();
+            const tree = Buffer.from(base64, "base64").toString("utf-8");
+            if (tree.length === 0)
+                return {};
+            return JSON.parse(tree);
+        });
     }
     getTreeToCreate() {
-        const base64 = this.treeToCreate.get();
-        const tree = Buffer.from(base64, "base64").toString("utf-8");
-        if (tree.length === 0)
-            return {};
-        return JSON.parse(tree);
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.waitModelReady();
+            const base64 = this.treeToCreate.get();
+            const tree = Buffer.from(base64, "base64").toString("utf-8");
+            if (tree.length === 0)
+                return {};
+            return JSON.parse(tree);
+        });
     }
     convertToBase64(tree) {
         return Buffer.from(JSON.stringify(tree)).toString("base64");
@@ -137,6 +152,22 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         // 		return reject();
         // 	});
         // });
+    }
+    waitModelReady() {
+        return new Promise((resolve, reject) => {
+            const wait = () => {
+                setTimeout(() => {
+                    //@ts-ignore
+                    if (FileSystem._sig_server === true) {
+                        resolve(true);
+                    }
+                    else {
+                        wait();
+                    }
+                }, 300);
+            };
+            wait();
+        });
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;

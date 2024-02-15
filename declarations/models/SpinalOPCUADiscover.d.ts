@@ -17,13 +17,14 @@ declare class SpinalOPCUADiscoverModel extends Model {
     addToGraph(): Promise<SpinalOPCUADiscoverModel>;
     removeFromGraph(): Promise<boolean>;
     changeState(state: OPCUA_ORGAN_STATES): void;
-    getTreeDiscovered(): {
+    getTreeDiscovered(): Promise<{
         [key: string]: any;
-    };
-    getTreeToCreate(): {
+    }>;
+    getTreeToCreate(): Promise<{
         [key: string]: any;
-    };
+    }>;
     private convertToBase64;
+    private waitModelReady;
 }
 export { SpinalOPCUADiscoverModel };
 export default SpinalOPCUADiscoverModel;

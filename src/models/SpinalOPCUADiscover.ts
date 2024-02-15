@@ -127,7 +127,9 @@ class SpinalOPCUADiscoverModel extends Model {
 		this.state.set(Array.from(choicesSet).indexOf(state));
 	}
 
-	public getTreeDiscovered(): { [key: string]: any } {
+	public async getTreeDiscovered(): Promise<{ [key: string]: any }> {
+		await this.waitModelReady();
+
 		const base64 = this.treeDiscovered.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
 
@@ -136,7 +138,9 @@ class SpinalOPCUADiscoverModel extends Model {
 		return JSON.parse(tree);
 	}
 
-	public getTreeToCreate(): { [key: string]: any } {
+	public async getTreeToCreate(): Promise<{ [key: string]: any }> {
+		await this.waitModelReady();
+
 		const base64 = this.treeToCreate.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
 
@@ -159,6 +163,23 @@ class SpinalOPCUADiscoverModel extends Model {
 		// 		return reject();
 		// 	});
 		// });
+	}
+
+	private waitModelReady() {
+		return new Promise((resolve, reject) => {
+			const wait = () => {
+				setTimeout(() => {
+					//@ts-ignore
+					if (FileSystem._sig_server === true) {
+						resolve(true);
+					} else {
+						wait();
+					}
+				}, 300);
+			};
+
+			wait();
+		});
 	}
 }
 
