@@ -58,6 +58,14 @@ class SpinalOPCUAListener extends Model {
         return this._loadData('profile');
     }
 
+    public addToDevice() {
+        return this.getBmsDevice().then((device) => {
+            if(device.info.listeners) device.info.rem_attr('listener');
+            
+            device.info.add_attr({listener: new Pbr(this)});
+        });        
+    }
+
     
     private _loadData(dataName : string): Promise<SpinalNode> {
         return new Promise((resolve, reject) => {

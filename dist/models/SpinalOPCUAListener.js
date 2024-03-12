@@ -48,6 +48,13 @@ class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
     getProfile() {
         return this._loadData('profile');
     }
+    addToDevice() {
+        return this.getBmsDevice().then((device) => {
+            if (device.info.listeners)
+                device.info.rem_attr('listener');
+            device.info.add_attr({ listener: new spinal_core_connectorjs_type_1.Pbr(this) });
+        });
+    }
     _loadData(dataName) {
         return new Promise((resolve, reject) => {
             try {
