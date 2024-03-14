@@ -4,12 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import { IDataNodes } from '../interfaces/IDataNodes';
 
 class SpinalOPCUAListener extends Model {
-    constructor(graph: SpinalGraph, context: SpinalContext, organ: SpinalNode, network: SpinalNode, bmsDevice: SpinalNode, profile: SpinalNode) {
+    constructor(graph: SpinalGraph, context: SpinalContext, organ: SpinalNode, network: SpinalNode, bmsDevice: SpinalNode, profile: SpinalNode, saveTimeSeries: boolean = false) {
         super();
 
         this.add_attr({
             id: uuidv4(),
-            monitored: true, 
+            monitored: true,
+            saveTimeSeries: saveTimeSeries,
             network : new Pbr(network),
             organ: new Pbr(organ),
             context: new Pbr(context),

@@ -4,11 +4,12 @@ exports.SpinalOPCUAListener = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
-    constructor(graph, context, organ, network, bmsDevice, profile) {
+    constructor(graph, context, organ, network, bmsDevice, profile, saveTimeSeries = false) {
         super();
         this.add_attr({
             id: (0, uuid_1.v4)(),
             monitored: true,
+            saveTimeSeries: saveTimeSeries,
             network: new spinal_core_connectorjs_type_1.Pbr(network),
             organ: new spinal_core_connectorjs_type_1.Pbr(organ),
             context: new spinal_core_connectorjs_type_1.Pbr(context),
