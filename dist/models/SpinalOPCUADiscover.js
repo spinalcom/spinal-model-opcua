@@ -13,6 +13,17 @@ exports.SpinalOPCUADiscoverModel = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
+function _formatNetwork(network) {
+    let endpoint = network.endpoint;
+    if (endpoint && endpoint.length > 0) {
+        if (endpoint.substring(0, 1) === "/")
+            endpoint = endpoint.substring(1);
+        if (endpoint.substring(endpoint.length - 1) === "/")
+            endpoint = endpoint.substring(0, endpoint.length - 1);
+    }
+    network.endpoint = endpoint;
+    return network;
+}
 class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     // constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
     constructor(graph, context, organ, network) {
@@ -21,7 +32,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         this.add_attr({
             id: (0, uuid_1.v4)(),
             state: new spinal_core_connectorjs_type_1.Choice(0, Array.from(choicesSet)),
-            network,
+            network: _formatNetwork(network),
             organ: new spinal_core_connectorjs_type_1.Ptr(organ),
             context: new spinal_core_connectorjs_type_1.Ptr(context),
             graph: new spinal_core_connectorjs_type_1.Ptr(graph),

@@ -5,7 +5,18 @@ import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 import * as zlib from "zlib";
-import { count } from "console";
+
+
+function _formatNetwork(network: IServer): IServer {
+	let endpoint = network.endpoint;
+	if(endpoint && endpoint.length > 0) {
+		if(endpoint.substring(0,1) === "/") endpoint = endpoint.substring(1);
+		if(endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
+	}
+
+	network.endpoint = endpoint;
+	return network;
+}
 
 class SpinalOPCUADiscoverModel extends Model {
 	graph: spinal.Ptr<SpinalGraph>;
@@ -22,7 +33,7 @@ class SpinalOPCUADiscoverModel extends Model {
 		this.add_attr({
 			id: uuidv4(),
 			state: new Choice(0, Array.from(choicesSet)),
-			network,
+			network: _formatNetwork(network),
 			organ: new Ptr(organ),
 			context: new Ptr(context),
 			graph: new Ptr(graph),
