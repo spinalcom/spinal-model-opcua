@@ -14,13 +14,11 @@ const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
 function _formatNetwork(network) {
-    let endpoint = network.endpoint;
-    if (endpoint && endpoint.length > 0) {
-        if (endpoint.substring(0, 1) === "/")
-            endpoint = endpoint.substring(1);
-        if (endpoint.substring(endpoint.length - 1) === "/")
-            endpoint = endpoint.substring(0, endpoint.length - 1);
-    }
+    let endpoint = network.endpoint || "";
+    if (endpoint.substring(0, 1) !== "/")
+        endpoint = `/${endpoint}`;
+    if (endpoint.substring(endpoint.length - 1) === "/")
+        endpoint = endpoint.substring(0, endpoint.length - 1);
     network.endpoint = endpoint;
     return network;
 }

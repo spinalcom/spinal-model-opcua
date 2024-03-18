@@ -8,11 +8,10 @@ import * as zlib from "zlib";
 
 
 function _formatNetwork(network: IServer): IServer {
-	let endpoint = network.endpoint;
-	if(endpoint && endpoint.length > 0) {
-		if(endpoint.substring(0,1) === "/") endpoint = endpoint.substring(1);
-		if(endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
-	}
+	let endpoint = network.endpoint || "";
+
+	if(endpoint.substring(0,1) !== "/") endpoint = `/${endpoint}`;
+	if(endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
 
 	network.endpoint = endpoint;
 	return network;
