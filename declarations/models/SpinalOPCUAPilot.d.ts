@@ -8,6 +8,8 @@ declare class SpinalOPCUAPilot extends Model {
     setSuccessMode(): void;
     setErrorMode(): void;
     getOrgan(): Promise<SpinalNode>;
+    addToNode(endpoint: SpinalNode<any>): Promise<any>;
+    removeToNode(): Promise<any>;
 }
 export default SpinalOPCUAPilot;
 export { SpinalOPCUAPilot };

@@ -41,6 +41,44 @@ class SpinalOPCUAPilot extends Model{
             this.organ.load(value => resolve(value));
         });
     }
+
+    public addToNode(endpoint: SpinalNode<any>): Promise<any> {
+        return new Promise((resolve) => {
+           if (!endpoint.info.pilot) {
+              const model = new Lst();
+              model.push(this);
+              endpoint.info.add_attr({ pilot: new Ptr(model) });
+              resolve(model);
+           } else {
+              endpoint.info.pilot.load(lst => {
+                 lst.push(this)
+                 resolve(lst);
+              })
+           }
+        }).then((res) => {
+           this.add_attr({ node: endpoint });
+           return res;
+        })
+    }
+  
+    public removeToNode(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        if (this.node) {
+            this.node.info.pilot.load(lst => {
+                for (let i = 0; i < lst.length; i++) {
+                const element = lst[i];
+                if (element.id.get() === this.id.get()) {
+                    lst.splice(i);
+                    break;
+                }
+                }
+                resolve(true);
+            })
+        } else {
+            resolve(false)
+        }
+    });
+    }
 }
 
 //@ts-ignore

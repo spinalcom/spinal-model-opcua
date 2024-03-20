@@ -30,6 +30,44 @@ class SpinalOPCUAPilot extends spinal_core_connectorjs_type_1.Model {
             this.organ.load(value => resolve(value));
         });
     }
+    addToNode(endpoint) {
+        return new Promise((resolve) => {
+            if (!endpoint.info.pilot) {
+                const model = new spinal_core_connectorjs_type_1.Lst();
+                model.push(this);
+                endpoint.info.add_attr({ pilot: new spinal_core_connectorjs_type_1.Ptr(model) });
+                resolve(model);
+            }
+            else {
+                endpoint.info.pilot.load(lst => {
+                    lst.push(this);
+                    resolve(lst);
+                });
+            }
+        }).then((res) => {
+            this.add_attr({ node: endpoint });
+            return res;
+        });
+    }
+    removeToNode() {
+        return new Promise((resolve, reject) => {
+            if (this.node) {
+                this.node.info.pilot.load(lst => {
+                    for (let i = 0; i < lst.length; i++) {
+                        const element = lst[i];
+                        if (element.id.get() === this.id.get()) {
+                            lst.splice(i);
+                            break;
+                        }
+                    }
+                    resolve(true);
+                });
+            }
+            else {
+                resolve(false);
+            }
+        });
+    }
 }
 exports.SpinalOPCUAPilot = SpinalOPCUAPilot;
 //@ts-ignore
