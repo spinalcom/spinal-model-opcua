@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./SpinalOPCUADiscover"), exports);
 __exportStar(require("./SpinalOrganOPCUA"), exports);
 __exportStar(require("./SpinalOPCUAListener"), exports);
+__exportStar(require("./SpinalOPCUAPilot"), exports);
 //# sourceMappingURL=index.js.map

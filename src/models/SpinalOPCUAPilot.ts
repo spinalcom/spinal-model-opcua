@@ -4,8 +4,6 @@ import { spinalCore, Model, Ptr, Lst, Choice, Pbr } from 'spinal-core-connectorj
 import { SpinalNode } from 'spinal-model-graph';
 import { v4 as uuidv4 } from "uuid";
 import { IRequest } from '../interfaces';
-import { SpinalOrganOPCUA } from './SpinalOrganOPCUA';
-import { resolve } from 'path';
 
 
 class SpinalOPCUAPilot extends Model{
