@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./INetwork"), exports);
 __exportStar(require("./IDataNodes"), exports);
 __exportStar(require("./IServer"), exports);
+__exportStar(require("./IRequest"), exports);
 //# sourceMappingURL=index.js.map
