@@ -1,5 +1,5 @@
 
 export interface IRequest {
-    objectId: string;
+    nodeId: string;
     value: string | number | boolean;
 }
