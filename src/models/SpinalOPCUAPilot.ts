@@ -59,7 +59,7 @@ class SpinalOPCUAPilot extends Model{
         })
     }
   
-    public removeToNode(): Promise<any> {
+    public removeFromNode(): Promise<any> {
     return new Promise((resolve, reject) => {
         if (this.node) {
             this.node.info.pilot.load(lst => {

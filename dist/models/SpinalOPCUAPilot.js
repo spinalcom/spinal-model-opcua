@@ -49,7 +49,7 @@ class SpinalOPCUAPilot extends spinal_core_connectorjs_type_1.Model {
             return res;
         });
     }
-    removeToNode() {
+    removeFromNode() {
         return new Promise((resolve, reject) => {
             if (this.node) {
                 this.node.info.pilot.load(lst => {
