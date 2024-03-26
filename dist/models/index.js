@@ -18,4 +18,5 @@ __exportStar(require("./SpinalOPCUADiscover"), exports);
 __exportStar(require("./SpinalOrganOPCUA"), exports);
 __exportStar(require("./SpinalOPCUAListener"), exports);
 __exportStar(require("./SpinalOPCUAPilot"), exports);
+__exportStar(require("./SpinalOPCUAEntryPoint"), exports);
 //# sourceMappingURL=index.js.map
