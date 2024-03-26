@@ -4,9 +4,9 @@ import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 declare class SpinalOPCUADiscoverModel extends Model {
-    graph: spinal.Ptr<SpinalGraph>;
-    organ: spinal.Ptr<SpinalOrganOPCUA>;
-    context: spinal.Ptr<SpinalContext>;
+    graph: spinal.Pbr<SpinalGraph>;
+    organ: spinal.Pbr<SpinalOrganOPCUA>;
+    context: spinal.Pbr<SpinalContext>;
     servers: spinal.Lst<any>;
     constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: IServer);
     getGraph(): Promise<SpinalGraph>;
@@ -23,8 +23,6 @@ declare class SpinalOPCUADiscoverModel extends Model {
     getTreeToCreate(): Promise<{
         [key: string]: any;
     }>;
-    private convertToBase64;
-    private waitModelReady;
 }
 export { SpinalOPCUADiscoverModel };
 export default SpinalOPCUADiscoverModel;

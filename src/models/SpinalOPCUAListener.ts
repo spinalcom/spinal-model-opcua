@@ -1,4 +1,4 @@
-import { spinalCore, Model, Ptr, Pbr } from 'spinal-core-connectorjs_type';
+import { spinalCore, Model, Pbr } from 'spinal-core-connectorjs_type';
 import { SpinalContext, SpinalGraph, SpinalNode } from 'spinal-model-graph';
 import { v4 as uuidv4 } from "uuid";
 import { IDataNodes } from '../interfaces/IDataNodes';

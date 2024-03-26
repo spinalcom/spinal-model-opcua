@@ -1,28 +1,17 @@
-import { spinalCore, Model, Ptr, Lst, Choice, Str } from "spinal-core-connectorjs_type";
+import { spinalCore, Model, Ptr, Lst, Choice, Str, Pbr } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
-import * as zlib from "zlib";
+import { _formatNetwork, convertToBase64, waitModelReady } from "../utils";
 
 
-function _formatNetwork(network: IServer): IServer {
-	let endpoint = network?.endpoint || "";
-
-	if(endpoint.substring(0,1) !== "/") endpoint = `/${endpoint}`;
-	if(endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
-
-	if(!network) network = { endpoint: "" } as any;
-	
-	network.endpoint = endpoint;
-	return network;
-}
 
 class SpinalOPCUADiscoverModel extends Model {
-	graph: spinal.Ptr<SpinalGraph>;
-	organ: spinal.Ptr<SpinalOrganOPCUA>;
-	context: spinal.Ptr<SpinalContext>;
+	graph: spinal.Pbr<SpinalGraph>;
+	organ: spinal.Pbr<SpinalOrganOPCUA>;
+	context: spinal.Pbr<SpinalContext>;
 	servers: spinal.Lst<any>;
 
 	// constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
@@ -35,9 +24,9 @@ class SpinalOPCUADiscoverModel extends Model {
 			id: uuidv4(),
 			state: new Choice(0, Array.from(choicesSet)),
 			network: _formatNetwork(network),
-			organ: new Ptr(organ),
-			context: new Ptr(context),
-			graph: new Ptr(graph),
+			organ: new Pbr(organ),
+			context: new Pbr(context),
+			graph: new Pbr(graph),
 			treeDiscovered: "",
 			treeToCreate: "",
 			// servers: new Lst(servers),
@@ -76,12 +65,12 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public setTreeDiscovered(json: any) {
-		const base64 = this.convertToBase64(json);
+		const base64 = convertToBase64(json);
 		this.treeDiscovered.set(base64);
 	}
 
 	public setTreeToCreate(json: any) {
-		const base64 = this.convertToBase64(json);
+		const base64 = convertToBase64(json);
 		this.treeToCreate.set(base64);
 	}
 
@@ -141,7 +130,7 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public async getTreeDiscovered(): Promise<{ [key: string]: any }> {
-		await this.waitModelReady(this.treeDiscovered);
+		await waitModelReady(this.treeDiscovered);
 
 		const base64 = this.treeDiscovered.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
@@ -152,7 +141,7 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public async getTreeToCreate(): Promise<{ [key: string]: any }> {
-		await this.waitModelReady(this.treeToCreate);
+		await waitModelReady(this.treeToCreate);
 
 		const base64 = this.treeToCreate.get();
 		const tree = Buffer.from(base64, "base64").toString("utf-8");
@@ -162,40 +151,8 @@ class SpinalOPCUADiscoverModel extends Model {
 		return JSON.parse(tree);
 	}
 
-	private convertToBase64(tree: any): string {
-		return Buffer.from(JSON.stringify(tree)).toString("base64");
+	
 
-		// return new Promise((resolve, reject) => {
-		// 	const treeString = JSON.stringify(tree);
-		// 	zlib.deflate(treeString, (err, buffer) => {
-		// 		if (!err) {
-		// 			const base64 = buffer.toString("base64");
-		// 			return resolve(base64);
-		// 		}
-
-		// 		return reject();
-		// 	});
-		// });
-	}
-
-	private waitModelReady(model: Str) {
-		return new Promise((resolve) => {
-			let time = 0;
-			const wait = () => {
-				setTimeout(() => {
-					const text = model.get();
-					//@ts-ignore
-					if ((text && text.length > 0) || time >= 2000) {
-						resolve(true);
-					} else {
-						time += 300;
-						wait();
-					}
-				}, 300);
-			};
-			wait();
-		});
-	}
 }
 
 //@ts-ignore

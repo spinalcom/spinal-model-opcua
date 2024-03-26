@@ -13,17 +13,7 @@ exports.SpinalOPCUADiscoverModel = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
-function _formatNetwork(network) {
-    let endpoint = (network === null || network === void 0 ? void 0 : network.endpoint) || "";
-    if (endpoint.substring(0, 1) !== "/")
-        endpoint = `/${endpoint}`;
-    if (endpoint.substring(endpoint.length - 1) === "/")
-        endpoint = endpoint.substring(0, endpoint.length - 1);
-    if (!network)
-        network = { endpoint: "" };
-    network.endpoint = endpoint;
-    return network;
-}
+const utils_1 = require("../utils");
 class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     // constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
     constructor(graph, context, organ, network) {
@@ -32,10 +22,10 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         this.add_attr({
             id: (0, uuid_1.v4)(),
             state: new spinal_core_connectorjs_type_1.Choice(0, Array.from(choicesSet)),
-            network: _formatNetwork(network),
-            organ: new spinal_core_connectorjs_type_1.Ptr(organ),
-            context: new spinal_core_connectorjs_type_1.Ptr(context),
-            graph: new spinal_core_connectorjs_type_1.Ptr(graph),
+            network: (0, utils_1._formatNetwork)(network),
+            organ: new spinal_core_connectorjs_type_1.Pbr(organ),
+            context: new spinal_core_connectorjs_type_1.Pbr(context),
+            graph: new spinal_core_connectorjs_type_1.Pbr(graph),
             treeDiscovered: "",
             treeToCreate: "",
             // servers: new Lst(servers),
@@ -73,11 +63,11 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         });
     }
     setTreeDiscovered(json) {
-        const base64 = this.convertToBase64(json);
+        const base64 = (0, utils_1.convertToBase64)(json);
         this.treeDiscovered.set(base64);
     }
     setTreeToCreate(json) {
-        const base64 = this.convertToBase64(json);
+        const base64 = (0, utils_1.convertToBase64)(json);
         this.treeToCreate.set(base64);
     }
     // public getServers(): spinal.Lst {
@@ -133,7 +123,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
     getTreeDiscovered() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.waitModelReady(this.treeDiscovered);
+            yield (0, utils_1.waitModelReady)(this.treeDiscovered);
             const base64 = this.treeDiscovered.get();
             const tree = Buffer.from(base64, "base64").toString("utf-8");
             if (tree.length === 0)
@@ -143,44 +133,12 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
     getTreeToCreate() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.waitModelReady(this.treeToCreate);
+            yield (0, utils_1.waitModelReady)(this.treeToCreate);
             const base64 = this.treeToCreate.get();
             const tree = Buffer.from(base64, "base64").toString("utf-8");
             if (tree.length === 0)
                 return {};
             return JSON.parse(tree);
-        });
-    }
-    convertToBase64(tree) {
-        return Buffer.from(JSON.stringify(tree)).toString("base64");
-        // return new Promise((resolve, reject) => {
-        // 	const treeString = JSON.stringify(tree);
-        // 	zlib.deflate(treeString, (err, buffer) => {
-        // 		if (!err) {
-        // 			const base64 = buffer.toString("base64");
-        // 			return resolve(base64);
-        // 		}
-        // 		return reject();
-        // 	});
-        // });
-    }
-    waitModelReady(model) {
-        return new Promise((resolve) => {
-            let time = 0;
-            const wait = () => {
-                setTimeout(() => {
-                    const text = model.get();
-                    //@ts-ignore
-                    if ((text && text.length > 0) || time >= 2000) {
-                        resolve(true);
-                    }
-                    else {
-                        time += 300;
-                        wait();
-                    }
-                }, 300);
-            };
-            wait();
         });
     }
 }
