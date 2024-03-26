@@ -1,7 +1,6 @@
-import { spinalCore, Model, Lst, Choice, Str, Pbr } from "spinal-core-connectorjs_type";
+import { spinalCore, Model, Lst, Choice, Str, Pbr, Ptr } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
-import { OPCUA_ORGAN_STATES } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 import { _formatNetwork, convertToBase64, waitModelReady } from "../utils";
@@ -71,4 +70,55 @@ class SpinalOPCUAEntryPoint extends Model {
 
 		return JSON.parse(tree);
 	}
+
+    public addToGraph(): Promise<SpinalOPCUAEntryPoint> {
+		return new Promise((resolve, reject) => {
+			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
+				if (organ.entryPoints) {
+					organ.entryPoints.load((list) => {
+						for (let i = 0; i < list.length; i++) {
+							const element = list[i];
+							if (element.id.get() === this.id.get()) return resolve(element);
+						}
+						list.push(this);
+						resolve(this);
+					});
+				} else {
+					organ.add_attr({
+						entryPoints: new Ptr(new Lst([this])),
+					});
+
+					resolve(this);
+				}
+			});
+		});
+	}
+
+	public removeFromGraph(): Promise<boolean> {
+		return new Promise((resolve, reject) => {
+			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
+				if (organ.entryPoints) {
+					organ.entryPoints.load((list) => {
+						for (let i = 0; i < list.length; i++) {
+							const element = list[i];
+							if (element.id.get() === this.id.get()) {
+								list.splice(i, 1);
+								return resolve(true);
+							}
+						}
+
+						resolve(false);
+					});
+				} else {
+					resolve(false);
+				}
+			});
+		});
+	}
 }
+
+//@ts-ignore
+spinalCore.register_models([SpinalOPCUAEntryPoint]);
+
+export { SpinalOPCUAEntryPoint };
+export default SpinalOPCUAEntryPoint;

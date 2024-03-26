@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpinalOPCUAEntryPoint = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils");
@@ -68,5 +69,53 @@ class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
             return JSON.parse(tree);
         });
     }
+    addToGraph() {
+        return new Promise((resolve, reject) => {
+            this.getOrgan().then((organ) => {
+                if (organ.entryPoints) {
+                    organ.entryPoints.load((list) => {
+                        for (let i = 0; i < list.length; i++) {
+                            const element = list[i];
+                            if (element.id.get() === this.id.get())
+                                return resolve(element);
+                        }
+                        list.push(this);
+                        resolve(this);
+                    });
+                }
+                else {
+                    organ.add_attr({
+                        entryPoints: new spinal_core_connectorjs_type_1.Ptr(new spinal_core_connectorjs_type_1.Lst([this])),
+                    });
+                    resolve(this);
+                }
+            });
+        });
+    }
+    removeFromGraph() {
+        return new Promise((resolve, reject) => {
+            this.getOrgan().then((organ) => {
+                if (organ.entryPoints) {
+                    organ.entryPoints.load((list) => {
+                        for (let i = 0; i < list.length; i++) {
+                            const element = list[i];
+                            if (element.id.get() === this.id.get()) {
+                                list.splice(i, 1);
+                                return resolve(true);
+                            }
+                        }
+                        resolve(false);
+                    });
+                }
+                else {
+                    resolve(false);
+                }
+            });
+        });
+    }
 }
+exports.SpinalOPCUAEntryPoint = SpinalOPCUAEntryPoint;
+//@ts-ignore
+spinal_core_connectorjs_type_1.spinalCore.register_models([SpinalOPCUAEntryPoint]);
+exports.default = SpinalOPCUAEntryPoint;
 //# sourceMappingURL=SpinalOPCUAEntryPoint.js.map
