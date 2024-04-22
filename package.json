@@ -1,6 +1,6 @@
 {
 	"name": "spinal-model-opcua",
-	"version": "1.3.3",
+	"version": "1.4.3",
 	"description": "",
 	"main": "dist/index.js",
 	"scripts": {
