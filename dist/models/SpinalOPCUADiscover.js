@@ -19,6 +19,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     constructor(graph, context, organ, network) {
         super();
         const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
+        const askChoicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_USER_CHOICE));
         this.add_attr({
             id: (0, uuid_1.v4)(),
             state: new spinal_core_connectorjs_type_1.Choice(0, Array.from(choicesSet)),
@@ -30,6 +31,8 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             treeToCreate: "",
             // servers: new Lst(servers),
             creation: Date.now(),
+            ask: false,
+            askResponse: new spinal_core_connectorjs_type_1.Choice(0, Array.from(askChoicesSet))
         });
     }
     getGraph() {

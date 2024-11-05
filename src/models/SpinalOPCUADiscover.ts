@@ -1,7 +1,7 @@
 import { spinalCore, Model, Ptr, Lst, Choice, Str, Pbr } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
-import { OPCUA_ORGAN_STATES } from "../constants";
+import { OPCUA_ORGAN_STATES, OPCUA_ORGAN_USER_CHOICE } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 import { _formatNetwork, convertToBase64, waitModelReady } from "../utils";
@@ -19,6 +19,7 @@ class SpinalOPCUADiscoverModel extends Model {
 		super();
 
 		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));
+		const askChoicesSet = new Set(Object.keys(OPCUA_ORGAN_USER_CHOICE));
 
 		this.add_attr({
 			id: uuidv4(),
@@ -31,6 +32,8 @@ class SpinalOPCUADiscoverModel extends Model {
 			treeToCreate: "",
 			// servers: new Lst(servers),
 			creation: Date.now(),
+			ask: false,
+			askResponse: new Choice(0, Array.from(askChoicesSet))
 		});
 	}
 
@@ -151,7 +154,7 @@ class SpinalOPCUADiscoverModel extends Model {
 		return JSON.parse(tree);
 	}
 
-	
+
 
 }
 

@@ -11,3 +11,7 @@ export declare enum OPCUA_ORGAN_STATES {
     timeout = "timeout",
     cancelled = "cancelled"
 }
+export declare enum OPCUA_ORGAN_USER_CHOICE {
+    yes = "yes",
+    no = "no"
+}
