@@ -13,6 +13,7 @@ export declare enum OPCUA_ORGAN_STATES {
     pending = "pending"
 }
 export declare enum OPCUA_ORGAN_USER_CHOICE {
+    noChoice = "noChoice",
     yes = "yes",
     no = "no"
 }

@@ -132,6 +132,11 @@ class SpinalOPCUADiscoverModel extends Model {
 		this.state.set(Array.from(choicesSet).indexOf(state));
 	}
 
+	public changeChoice(choice: OPCUA_ORGAN_USER_CHOICE) {
+		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_USER_CHOICE));
+		this.askResponse.set(Array.from(choicesSet).indexOf(choice));
+	}
+
 	public async getTreeDiscovered(): Promise<{ [key: string]: any }> {
 		await waitModelReady(this.treeDiscovered);
 

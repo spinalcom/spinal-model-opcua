@@ -1,6 +1,6 @@
 import { Model } from "spinal-core-connectorjs_type";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
-import { OPCUA_ORGAN_STATES } from "../constants";
+import { OPCUA_ORGAN_STATES, OPCUA_ORGAN_USER_CHOICE } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { IServer } from "../interfaces/IServer";
 declare class SpinalOPCUADiscoverModel extends Model {
@@ -17,6 +17,7 @@ declare class SpinalOPCUADiscoverModel extends Model {
     addToGraph(): Promise<SpinalOPCUADiscoverModel>;
     removeFromGraph(): Promise<boolean>;
     changeState(state: OPCUA_ORGAN_STATES): void;
+    changeChoice(choice: OPCUA_ORGAN_USER_CHOICE): void;
     getTreeDiscovered(): Promise<{
         [key: string]: any;
     }>;

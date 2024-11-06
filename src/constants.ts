@@ -16,6 +16,7 @@ export enum OPCUA_ORGAN_STATES {
 
 
 export enum OPCUA_ORGAN_USER_CHOICE {
+	noChoice = "noChoice",
 	yes = "yes",
 	no = "no"
 }

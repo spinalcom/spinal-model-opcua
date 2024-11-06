@@ -124,6 +124,10 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
         const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
         this.state.set(Array.from(choicesSet).indexOf(state));
     }
+    changeChoice(choice) {
+        const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_USER_CHOICE));
+        this.askResponse.set(Array.from(choicesSet).indexOf(choice));
+    }
     getTreeDiscovered() {
         return __awaiter(this, void 0, void 0, function* () {
             yield (0, utils_1.waitModelReady)(this.treeDiscovered);
