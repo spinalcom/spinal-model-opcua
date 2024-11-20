@@ -1,15 +1,15 @@
-import { Str } from "spinal-core-connectorjs_type";
+import { Ptr, Str } from "spinal-core-connectorjs_type";
 import { IServer } from "./interfaces/IServer";
-
+import axios from "axios";
 
 export function _formatNetwork(network: IServer): IServer {
 	let endpoint = network?.endpoint || "";
 
-	if(endpoint.substring(0,1) !== "/") endpoint = `/${endpoint}`;
-	if(endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
+	if (endpoint.substring(0, 1) !== "/") endpoint = `/${endpoint}`;
+	if (endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
 
-	if(!network) network = { endpoint: "" } as any;
-	
+	if (!network) network = { endpoint: "" } as any;
+
 	network.endpoint = endpoint;
 	return network;
 }
@@ -19,21 +19,61 @@ export function convertToBase64(tree: any): string {
 }
 
 
-export function waitModelReady(model: Str) {
-	return new Promise((resolve) => {
-		let time = 0;
-		const wait = () => {
-			setTimeout(() => {
-				const text = model.get();
-				//@ts-ignore
-				if ((text && text.length > 0) || time >= 2000) {
-					resolve(true);
-				} else {
-					time += 300;
-					wait();
-				}
-			}, 300);
-		};
-		wait();
+export function getPathData(dynamicId) {
+	return axios.get("/sceen/_?u=" + dynamicId).then((response) => {
+		// return Buffer.from(response.data);
+		return response.data;
 	});
 }
+
+export function waitModelReady(model: Ptr) {
+	return new Promise((resolve, reject) => {
+		model.load((path) => {
+			if (!path) return resolve(true);
+
+			const delay = 3000;
+			const intervalTime = 300;
+			let time = 0;
+
+			const wait = () => {
+				setTimeout(() => {
+					const remaining = path.remaining.get();
+
+					if (remaining == 0 || time >= delay) {
+						resolve(true);
+					} else {
+						time += intervalTime;
+						wait();
+					}
+				}, intervalTime);
+			};
+
+			wait();
+		});
+	});
+}
+
+
+// export function waitModelReady(model: Str) {
+// 	const delay = 3000;
+// 	const intervalTime = 300;
+
+// 	return new Promise((resolve) => {
+// 		let time = 0;
+
+// 		const wait = () => {
+// 			setTimeout(() => {
+// 				const text = model.get();
+// 				//@ts-ignore
+// 				if ((text && text.length > 0) || time >= delay) {
+// 					resolve(true);
+// 				} else {
+// 					time += intervalTime;
+// 					wait();
+// 				}
+// 			}, intervalTime);
+// 		};
+
+// 		wait();
+// 	});
+// }

@@ -12,18 +12,14 @@ declare class SpinalOPCUADiscoverModel extends Model {
     getGraph(): Promise<SpinalGraph>;
     getOrgan(): Promise<SpinalOrganOPCUA>;
     getContext(): Promise<SpinalContext>;
-    setTreeDiscovered(json: any): void;
-    setTreeToCreate(json: any): void;
+    setTreeDiscovered(json: any): Promise<void>;
+    setTreeToCreate(json: any): Promise<void>;
+    getTreeDiscovered(): Promise<any>;
+    getTreeToCreate(): Promise<any>;
     addToGraph(): Promise<SpinalOPCUADiscoverModel>;
     removeFromGraph(): Promise<boolean>;
     changeState(state: OPCUA_ORGAN_STATES): void;
     changeChoice(choice: OPCUA_ORGAN_USER_CHOICE): void;
-    getTreeDiscovered(): Promise<{
-        [key: string]: any;
-    }>;
-    getTreeToCreate(): Promise<{
-        [key: string]: any;
-    }>;
 }
 export { SpinalOPCUADiscoverModel };
 export default SpinalOPCUADiscoverModel;
