@@ -119,19 +119,19 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             this.mod_attr("treeToCreate", new spinal_core_connectorjs_type_1.Ptr(path));
         });
     }
-    getTreeDiscovered() {
+    getTreeDiscovered(hubUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             yield (0, utils_1.waitModelReady)(this.treeDiscovered);
-            const pathData = yield (0, utils_1.getPathData)(this.treeDiscovered.data.value);
+            const pathData = yield (0, utils_1.getPathData)(this.treeDiscovered.data.value, hubUrl);
             return pathData;
             // const tree = await ungzip(pathData);
             // return JSON.parse(tree.toString());
         });
     }
-    getTreeToCreate() {
+    getTreeToCreate(hubUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             yield (0, utils_1.waitModelReady)(this.treeToCreate);
-            const pathData = yield (0, utils_1.getPathData)(this.treeToCreate.data.value);
+            const pathData = yield (0, utils_1.getPathData)(this.treeToCreate.data.value, hubUrl);
             return pathData;
             // const tree = await ungzip(pathData);
             // return JSON.parse(tree.toString());
