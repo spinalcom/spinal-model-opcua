@@ -106,7 +106,8 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             // const compressed = await gzip(JSON.stringify(json));
             const compressed = Buffer.from(JSON.stringify(json));
             const path = new spinal_core_connectorjs_type_1.Path(compressed);
-            this.treeDiscovered.set(path);
+            // this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
+            this.mod_attr("treeDiscovered", new spinal_core_connectorjs_type_1.Ptr(path));
         });
     }
     setTreeToCreate(json) {
@@ -114,7 +115,8 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             // const compressed = await gzip(JSON.stringify(json));
             const compressed = Buffer.from(JSON.stringify(json));
             const path = new spinal_core_connectorjs_type_1.Path(compressed);
-            this.treeToCreate.set(path);
+            // this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
+            this.mod_attr("treeToCreate", new spinal_core_connectorjs_type_1.Ptr(path));
         });
     }
     getTreeDiscovered() {

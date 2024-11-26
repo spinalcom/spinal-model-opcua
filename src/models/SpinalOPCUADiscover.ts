@@ -110,14 +110,16 @@ class SpinalOPCUADiscoverModel extends Model {
 		// const compressed = await gzip(JSON.stringify(json));
 		const compressed = Buffer.from(JSON.stringify(json));
 		const path = new Path(compressed);
-		this.treeDiscovered.set(path);
+		// this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
+		this.mod_attr("treeDiscovered", new Ptr(path));
 	}
 
 	public async setTreeToCreate(json: any) {
 		// const compressed = await gzip(JSON.stringify(json));
 		const compressed = Buffer.from(JSON.stringify(json));
 		const path = new Path(compressed);
-		this.treeToCreate.set(path);
+		// this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
+		this.mod_attr("treeToCreate", new Ptr(path));
 	}
 
 	public async getTreeDiscovered() {
