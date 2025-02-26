@@ -1,6 +1,6 @@
+import { IServer } from "./IServer";
+
 export interface INetwork {
 	name?: string;
-	listen?: boolean;
-	saveTimeSeries?: boolean;
-	interval: number;
+	gateways: IServer[];
 }

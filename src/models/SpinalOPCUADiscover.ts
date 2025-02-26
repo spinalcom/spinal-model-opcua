@@ -3,10 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 import { SpinalContext, SpinalGraph } from "spinal-model-graph";
 import { OPCUA_ORGAN_STATES, OPCUA_ORGAN_USER_CHOICE } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
-import { IServer } from "../interfaces/IServer";
-import { _formatNetwork, convertToBase64, getPathData, waitModelReady } from "../utils";
-import { gzip, ungzip } from "node-gzip";
-import * as axios from "axios";
+import { _formatNetwork, getPathData, waitModelReady } from "../utils";
+import { INetwork } from "../interfaces/INetwork";
+
 
 class SpinalOPCUADiscoverModel extends Model {
 	graph: spinal.Pbr<SpinalGraph>;
@@ -14,8 +13,7 @@ class SpinalOPCUADiscoverModel extends Model {
 	context: spinal.Pbr<SpinalContext>;
 	servers: spinal.Lst<any>;
 
-	// constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork, servers: IServer[]) {
-	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: IServer) {
+	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork) {
 		super();
 
 		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));

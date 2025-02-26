@@ -1,17 +1,22 @@
 import { Ptr, Str } from "spinal-core-connectorjs_type";
-import { IServer } from "./interfaces/IServer";
+import { IServer, INetwork } from "./interfaces";
 import axios from "axios";
 
-export function _formatNetwork(network: IServer): IServer {
-	let endpoint = network?.endpoint || "";
+export function _formatNetwork(network: INetwork): INetwork {
+	network.gateways = network.gateways.map(el => _formatServer(el));
+	return network;
+}
+
+export function _formatServer(server: IServer) {
+	let endpoint = server?.endpoint || "";
 
 	if (endpoint.substring(0, 1) !== "/") endpoint = `/${endpoint}`;
 	if (endpoint.substring(endpoint.length - 1) === "/") endpoint = endpoint.substring(0, endpoint.length - 1);
 
-	if (!network) network = { endpoint: "" } as any;
+	if (!server) server = { endpoint: "" } as any;
 
-	network.endpoint = endpoint;
-	return network;
+	server.endpoint = endpoint;
+	return server
 }
 
 export function convertToBase64(tree: any): string {
