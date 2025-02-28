@@ -15,6 +15,7 @@ var OPCUA_ORGAN_STATES;
     OPCUA_ORGAN_STATES["timeout"] = "timeout";
     OPCUA_ORGAN_STATES["cancelled"] = "cancelled";
     OPCUA_ORGAN_STATES["pending"] = "pending";
+    OPCUA_ORGAN_STATES["stopped"] = "stopped";
 })(OPCUA_ORGAN_STATES || (exports.OPCUA_ORGAN_STATES = OPCUA_ORGAN_STATES = {}));
 var OPCUA_ORGAN_USER_CHOICE;
 (function (OPCUA_ORGAN_USER_CHOICE) {

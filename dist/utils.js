@@ -1,15 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._formatNetwork = _formatNetwork;
-exports._formatServer = _formatServer;
-exports.convertToBase64 = convertToBase64;
-exports.getPathData = getPathData;
-exports.waitModelReady = waitModelReady;
+exports.waitModelReady = exports.getPathData = exports.convertToBase64 = exports._formatServer = exports._formatNetwork = void 0;
 const axios_1 = require("axios");
 function _formatNetwork(network) {
     network.gateways = network.gateways.map(el => _formatServer(el));
     return network;
 }
+exports._formatNetwork = _formatNetwork;
 function _formatServer(server) {
     let endpoint = (server === null || server === void 0 ? void 0 : server.endpoint) || "";
     if (endpoint.substring(0, 1) !== "/")
@@ -21,9 +18,11 @@ function _formatServer(server) {
     server.endpoint = endpoint;
     return server;
 }
+exports._formatServer = _formatServer;
 function convertToBase64(tree) {
     return Buffer.from(JSON.stringify(tree)).toString("base64");
 }
+exports.convertToBase64 = convertToBase64;
 function getPathData(dynamicId, hubUrl) {
     const path = hubUrl ? `${hubUrl}/sceen/_?u=${dynamicId}` : `/sceen/_?u=${dynamicId}`;
     return axios_1.default.get(path).then((response) => {
@@ -31,6 +30,7 @@ function getPathData(dynamicId, hubUrl) {
         return response.data;
     });
 }
+exports.getPathData = getPathData;
 function waitModelReady(model) {
     return new Promise((resolve, reject) => {
         model.load((path) => {
@@ -55,6 +55,7 @@ function waitModelReady(model) {
         });
     });
 }
+exports.waitModelReady = waitModelReady;
 // export function waitModelReady(model: Str) {
 // 	const delay = 3000;
 // 	const intervalTime = 300;

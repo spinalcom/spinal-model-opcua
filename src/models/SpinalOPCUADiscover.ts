@@ -5,6 +5,7 @@ import { OPCUA_ORGAN_STATES, OPCUA_ORGAN_USER_CHOICE } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { _formatNetwork, getPathData, waitModelReady } from "../utils";
 import { INetwork } from "../interfaces/INetwork";
+import { finished } from "stream";
 
 
 class SpinalOPCUADiscoverModel extends Model {
@@ -31,7 +32,8 @@ class SpinalOPCUADiscoverModel extends Model {
 			// servers: new Lst(servers),
 			creation: Date.now(),
 			ask: false,
-			askResponse: new Choice(0, Array.from(askChoicesSet))
+			askResponse: new Choice(0, Array.from(askChoicesSet)),
+			progress: new Model({ finished: 0, total: network.gateways.length })
 		});
 	}
 

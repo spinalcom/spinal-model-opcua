@@ -11,7 +11,8 @@ export enum OPCUA_ORGAN_STATES {
 	error = "error",
 	timeout = "timeout",
 	cancelled = "cancelled",
-	pending = "pending"
+	pending = "pending",
+	stopped = "stopped"
 }
 
 
