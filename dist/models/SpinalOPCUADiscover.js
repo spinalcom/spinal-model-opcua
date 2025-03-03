@@ -130,7 +130,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
     getTreeDiscovered(hubUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            // await waitModelReady(this.treeDiscovered);
+            yield (0, utils_1.waitModelReady)(this.treeDiscovered);
             // // const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
             // // return pathData;
             // // // const tree = await ungzip(pathData);
