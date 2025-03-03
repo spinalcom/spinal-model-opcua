@@ -8,7 +8,7 @@ declare class SpinalOPCUADiscoverModel extends Model {
     organ: spinal.Pbr<SpinalOrganOPCUA>;
     context: spinal.Pbr<SpinalContext>;
     servers: spinal.Lst<any>;
-    constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork);
+    constructor(graph?: SpinalGraph<any>, context?: SpinalContext<any>, organ?: SpinalOrganOPCUA, network?: INetwork);
     getGraph(): Promise<SpinalGraph>;
     getOrgan(): Promise<SpinalOrganOPCUA>;
     getContext(): Promise<SpinalContext>;

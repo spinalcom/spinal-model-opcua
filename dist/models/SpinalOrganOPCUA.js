@@ -30,6 +30,8 @@ const constants_1 = require("../constants");
 class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
     constructor(name, type = constants_1.OPCUA_ORGAN_TYPE) {
         super();
+        if (!name)
+            return;
         this.add_attr({
             id: (0, uuid_1.v4)(),
             name,

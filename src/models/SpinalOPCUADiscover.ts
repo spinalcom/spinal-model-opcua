@@ -5,7 +5,7 @@ import { OPCUA_ORGAN_STATES, OPCUA_ORGAN_USER_CHOICE } from "../constants";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { _formatNetwork, getPathData, waitModelReady } from "../utils";
 import { INetwork } from "../interfaces/INetwork";
-import { finished } from "stream";
+import * as gzip from "node-gzip"
 
 
 class SpinalOPCUADiscoverModel extends Model {
@@ -14,8 +14,10 @@ class SpinalOPCUADiscoverModel extends Model {
 	context: spinal.Pbr<SpinalContext>;
 	servers: spinal.Lst<any>;
 
-	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork) {
+	constructor(graph?: SpinalGraph<any>, context?: SpinalContext<any>, organ?: SpinalOrganOPCUA, network?: INetwork) {
 		super();
+
+		if (!graph || !context || !organ || !network) return;
 
 		const choicesSet = new Set(Object.keys(OPCUA_ORGAN_STATES));
 		const askChoicesSet = new Set(Object.keys(OPCUA_ORGAN_USER_CHOICE));
@@ -107,36 +109,59 @@ class SpinalOPCUADiscoverModel extends Model {
 
 
 	public async setTreeDiscovered(json: any) {
-		// const compressed = await gzip(JSON.stringify(json));
-		const compressed = Buffer.from(JSON.stringify(json));
+		// // const compressed = await gzip(JSON.stringify(json));
+		// const compressed = Buffer.from(JSON.stringify(json));
+		// const path = new Path(compressed);
+		// // this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
+		// this.mod_attr("treeDiscovered", new Ptr(path));
+
+		const compressed = await gzip.gzip(JSON.stringify(json));
 		const path = new Path(compressed);
-		// this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
 		this.mod_attr("treeDiscovered", new Ptr(path));
+
 	}
 
 	public async setTreeToCreate(json: any) {
-		// const compressed = await gzip(JSON.stringify(json));
-		const compressed = Buffer.from(JSON.stringify(json));
+		// // const compressed = await gzip(JSON.stringify(json));
+		// const compressed = Buffer.from(JSON.stringify(json));
+		// const path = new Path(compressed);
+		// // this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
+		// this.mod_attr("treeToCreate", new Ptr(path));
+
+		const compressed = await gzip.gzip(JSON.stringify(json));
 		const path = new Path(compressed);
-		// this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
 		this.mod_attr("treeToCreate", new Ptr(path));
 	}
 
 	public async getTreeDiscovered(hubUrl?: string) {
-		await waitModelReady(this.treeDiscovered);
-		const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
-		return pathData;
-		// const tree = await ungzip(pathData);
+		// await waitModelReady(this.treeDiscovered);
+		// // const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
+		// // return pathData;
+		// // // const tree = await ungzip(pathData);
+		// // // return JSON.parse(tree.toString());
+
+		// const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
+		// const tree = await gzip.ungzip(pathData);
+
 		// return JSON.parse(tree.toString());
+
+		const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
+		const decompressed = await gzip.ungzip(pathData);
+		return JSON.parse(decompressed.toString());
 	}
 
 
 	public async getTreeToCreate(hubUrl?: string) {
-		await waitModelReady(this.treeToCreate);
+		// await waitModelReady(this.treeToCreate);
+		// const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
+		// return pathData;
+		// // const tree = await ungzip(pathData);
+		// // return JSON.parse(tree.toString());
+
 		const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
-		return pathData;
-		// const tree = await ungzip(pathData);
-		// return JSON.parse(tree.toString());
+		const decompressed = await gzip.ungzip(pathData);
+		return JSON.parse(decompressed.toString());
+
 	}
 
 
@@ -202,7 +227,7 @@ class SpinalOPCUADiscoverModel extends Model {
 
 }
 
-//@ts-ignore
+
 spinalCore.register_models([SpinalOPCUADiscoverModel]);
 
 export { SpinalOPCUADiscoverModel };

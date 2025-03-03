@@ -14,9 +14,12 @@ const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
 const utils_1 = require("../utils");
+const gzip = require("node-gzip");
 class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     constructor(graph, context, organ, network) {
         super();
+        if (!graph || !context || !organ || !network)
+            return;
         const choicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_STATES));
         const askChoicesSet = new Set(Object.keys(constants_1.OPCUA_ORGAN_USER_CHOICE));
         this.add_attr({
@@ -103,38 +106,53 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     */
     setTreeDiscovered(json) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const compressed = await gzip(JSON.stringify(json));
-            const compressed = Buffer.from(JSON.stringify(json));
+            // // const compressed = await gzip(JSON.stringify(json));
+            // const compressed = Buffer.from(JSON.stringify(json));
+            // const path = new Path(compressed);
+            // // this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
+            // this.mod_attr("treeDiscovered", new Ptr(path));
+            const compressed = yield gzip.gzip(JSON.stringify(json));
             const path = new spinal_core_connectorjs_type_1.Path(compressed);
-            // this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
             this.mod_attr("treeDiscovered", new spinal_core_connectorjs_type_1.Ptr(path));
         });
     }
     setTreeToCreate(json) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const compressed = await gzip(JSON.stringify(json));
-            const compressed = Buffer.from(JSON.stringify(json));
+            // // const compressed = await gzip(JSON.stringify(json));
+            // const compressed = Buffer.from(JSON.stringify(json));
+            // const path = new Path(compressed);
+            // // this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
+            // this.mod_attr("treeToCreate", new Ptr(path));
+            const compressed = yield gzip.gzip(JSON.stringify(json));
             const path = new spinal_core_connectorjs_type_1.Path(compressed);
-            // this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
             this.mod_attr("treeToCreate", new spinal_core_connectorjs_type_1.Ptr(path));
         });
     }
     getTreeDiscovered(hubUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, utils_1.waitModelReady)(this.treeDiscovered);
-            const pathData = yield (0, utils_1.getPathData)(this.treeDiscovered.data.value, hubUrl);
-            return pathData;
-            // const tree = await ungzip(pathData);
+            // await waitModelReady(this.treeDiscovered);
+            // // const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
+            // // return pathData;
+            // // // const tree = await ungzip(pathData);
+            // // // return JSON.parse(tree.toString());
+            // const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
+            // const tree = await gzip.ungzip(pathData);
             // return JSON.parse(tree.toString());
+            const pathData = yield (0, utils_1.getPathData)(this.treeDiscovered.data.value, hubUrl);
+            const decompressed = yield gzip.ungzip(pathData);
+            return JSON.parse(decompressed.toString());
         });
     }
     getTreeToCreate(hubUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, utils_1.waitModelReady)(this.treeToCreate);
+            // await waitModelReady(this.treeToCreate);
+            // const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
+            // return pathData;
+            // // const tree = await ungzip(pathData);
+            // // return JSON.parse(tree.toString());
             const pathData = yield (0, utils_1.getPathData)(this.treeToCreate.data.value, hubUrl);
-            return pathData;
-            // const tree = await ungzip(pathData);
-            // return JSON.parse(tree.toString());
+            const decompressed = yield gzip.ungzip(pathData);
+            return JSON.parse(decompressed.toString());
         });
     }
     addToGraph() {
@@ -191,7 +209,6 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
     }
 }
 exports.SpinalOPCUADiscoverModel = SpinalOPCUADiscoverModel;
-//@ts-ignore
 spinal_core_connectorjs_type_1.spinalCore.register_models([SpinalOPCUADiscoverModel]);
 exports.default = SpinalOPCUADiscoverModel;
 //# sourceMappingURL=SpinalOPCUADiscover.js.map

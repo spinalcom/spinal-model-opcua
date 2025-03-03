@@ -16,6 +16,8 @@ const utils_1 = require("../utils");
 class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
     constructor(graph, context, organ, network) {
         super();
+        if (!graph || !context || !organ || !network)
+            return;
         this.add_attr({
             id: (0, uuid_1.v4)(),
             organ: new spinal_core_connectorjs_type_1.Pbr(organ),
@@ -115,7 +117,6 @@ class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
     }
 }
 exports.SpinalOPCUAEntryPoint = SpinalOPCUAEntryPoint;
-//@ts-ignore
 spinal_core_connectorjs_type_1.spinalCore.register_models([SpinalOPCUAEntryPoint]);
 exports.default = SpinalOPCUAEntryPoint;
 //# sourceMappingURL=SpinalOPCUAEntryPoint.js.map

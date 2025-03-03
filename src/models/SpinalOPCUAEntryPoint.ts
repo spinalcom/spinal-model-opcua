@@ -12,8 +12,10 @@ class SpinalOPCUAEntryPoint extends Model {
 	context: spinal.Pbr<SpinalContext>;
 	servers: spinal.Lst<any>;
 
-	constructor(graph: SpinalGraph<any>, context: SpinalContext<any>, organ: SpinalOrganOPCUA, network: INetwork) {
+	constructor(graph?: SpinalGraph<any>, context?: SpinalContext<any>, organ?: SpinalOrganOPCUA, network?: INetwork) {
 		super();
+
+		if (!graph || !context || !organ || !network) return;
 
 		this.add_attr({
 			id: uuidv4(),
@@ -117,7 +119,7 @@ class SpinalOPCUAEntryPoint extends Model {
 	}
 }
 
-//@ts-ignore
+
 spinalCore.register_models([SpinalOPCUAEntryPoint]);
 
 export { SpinalOPCUAEntryPoint };

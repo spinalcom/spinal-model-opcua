@@ -6,6 +6,8 @@ const uuid_1 = require("uuid");
 class SpinalOPCUAPilot extends spinal_core_connectorjs_type_1.Model {
     constructor(organ, request) {
         super();
+        if (!organ || !request)
+            return;
         this.add_attr({
             id: (0, uuid_1.v4)(),
             state: new spinal_core_connectorjs_type_1.Choice(0, ["init", "process", "success", "error"]),
@@ -70,7 +72,6 @@ class SpinalOPCUAPilot extends spinal_core_connectorjs_type_1.Model {
     }
 }
 exports.SpinalOPCUAPilot = SpinalOPCUAPilot;
-//@ts-ignore
 spinal_core_connectorjs_type_1.spinalCore.register_models([SpinalOPCUAPilot]);
 exports.default = SpinalOPCUAPilot;
 //# sourceMappingURL=SpinalOPCUAPilot.js.map

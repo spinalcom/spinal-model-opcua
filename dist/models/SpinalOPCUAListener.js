@@ -6,6 +6,8 @@ const uuid_1 = require("uuid");
 class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
     constructor(graph, context, organ, network, bmsDevice, profile, saveTimeSeries = false) {
         super();
+        if (!graph || !context || !organ || !network)
+            return;
         this.add_attr({
             id: (0, uuid_1.v4)(),
             monitored: true,
@@ -70,7 +72,6 @@ class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
     }
 }
 exports.SpinalOPCUAListener = SpinalOPCUAListener;
-//@ts-ignore
 spinal_core_connectorjs_type_1.spinalCore.register_models([SpinalOPCUAListener]);
 exports.default = SpinalOPCUAListener;
 //# sourceMappingURL=SpinalOPCUAListener.js.map

@@ -33,8 +33,9 @@ class SpinalOrganOPCUA extends Model {
 
 	references: any;
 
-	constructor(name: string, type: string = OPCUA_ORGAN_TYPE) {
+	constructor(name?: string, type: string = OPCUA_ORGAN_TYPE) {
 		super();
+		if (!name) return;
 
 		this.add_attr({
 			id: uuidv4(),
