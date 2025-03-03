@@ -26,9 +26,10 @@ export function convertToBase64(tree: any): string {
 
 export function getPathData(dynamicId: number, hubUrl?: string) {
 	const path = hubUrl ? `${hubUrl}/sceen/_?u=${dynamicId}` : `/sceen/_?u=${dynamicId}`;
+
 	return axios.get(path, { responseType: 'arraybuffer' }).then((response) => {
 		// return Buffer.from(response.data);
-		return Uint8Array.from(response.data);
+		return new Uint8Array(response.data);
 	});
 }
 

@@ -27,7 +27,7 @@ function getPathData(dynamicId, hubUrl) {
     const path = hubUrl ? `${hubUrl}/sceen/_?u=${dynamicId}` : `/sceen/_?u=${dynamicId}`;
     return axios_1.default.get(path, { responseType: 'arraybuffer' }).then((response) => {
         // return Buffer.from(response.data);
-        return Uint8Array.from(response.data);
+        return new Uint8Array(response.data);
     });
 }
 exports.getPathData = getPathData;
