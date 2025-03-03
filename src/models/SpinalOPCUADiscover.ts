@@ -152,7 +152,7 @@ class SpinalOPCUADiscoverModel extends Model {
 
 
 	public async getTreeToCreate(hubUrl?: string) {
-		// await waitModelReady(this.treeToCreate);
+		await waitModelReady(this.treeToCreate);
 		// const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
 		// return pathData;
 		// // const tree = await ungzip(pathData);
