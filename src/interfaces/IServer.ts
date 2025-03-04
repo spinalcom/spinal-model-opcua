@@ -1,5 +1,5 @@
 export interface IServer {
-	ip: string;
+	address: string;
 	port: number;
 	name: string;
 	endpoint: string;

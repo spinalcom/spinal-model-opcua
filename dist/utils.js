@@ -34,14 +34,14 @@ exports.getPathData = getPathData;
 function waitModelReady(model) {
     return new Promise((resolve, reject) => {
         model.load((path) => {
-            if (!path)
-                return resolve(true);
+            // if (!path) return resolve(true);
             const delay = 3000;
             const intervalTime = 300;
             let time = 0;
             const wait = () => {
                 setTimeout(() => {
-                    const remaining = path.remaining.get();
+                    var _a;
+                    const remaining = (_a = path === null || path === void 0 ? void 0 : path.remaining) === null || _a === void 0 ? void 0 : _a.get();
                     if (remaining == 0 || time >= delay) {
                         resolve(true);
                     }

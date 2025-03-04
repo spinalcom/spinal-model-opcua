@@ -68,42 +68,6 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             }
         });
     }
-    /*
-        ///////////////////////////////////////////////////
-        //             use base64
-        ///////////////////////////////////////////////////
-        public setTreeDiscovered(json: any) {
-            const base64 = convertToBase64(json);
-            this.treeDiscovered.set(base64);
-        }
-
-        public setTreeToCreate(json: any) {
-            const base64 = convertToBase64(json);
-            this.treeToCreate.set(base64);
-        }
-        
-        public async getTreeDiscovered(): Promise<{ [key: string]: any }> {
-            await waitModelReady(this.treeDiscovered);
-
-            const base64 = this.treeDiscovered.get();
-            const tree = Buffer.from(base64, "base64").toString("utf-8");
-
-            if (tree.length === 0) return {};
-
-            return JSON.parse(tree);
-        }
-
-        public async getTreeToCreate(): Promise<{ [key: string]: any }> {
-            await waitModelReady(this.treeToCreate);
-
-            const base64 = this.treeToCreate.get();
-            const tree = Buffer.from(base64, "base64").toString("utf-8");
-
-            if (tree.length === 0) return {};
-
-            return JSON.parse(tree);
-        }
-    */
     setTreeDiscovered(json) {
         return __awaiter(this, void 0, void 0, function* () {
             // // const compressed = await gzip(JSON.stringify(json));

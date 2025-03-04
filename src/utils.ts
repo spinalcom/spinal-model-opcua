@@ -36,7 +36,7 @@ export function getPathData(dynamicId: number, hubUrl?: string) {
 export function waitModelReady(model: Ptr) {
 	return new Promise((resolve, reject) => {
 		model.load((path) => {
-			if (!path) return resolve(true);
+			// if (!path) return resolve(true);
 
 			const delay = 3000;
 			const intervalTime = 300;
@@ -44,7 +44,7 @@ export function waitModelReady(model: Ptr) {
 
 			const wait = () => {
 				setTimeout(() => {
-					const remaining = path.remaining.get();
+					const remaining = path?.remaining?.get();
 
 					if (remaining == 0 || time >= delay) {
 						resolve(true);
