@@ -35,7 +35,7 @@ class SpinalOPCUADiscoverModel extends Model {
 			creation: Date.now(),
 			ask: false,
 			askResponse: new Choice(0, Array.from(askChoicesSet)),
-			progress: new Model({ finished: 0, total: network.gateways.length })
+			progress: new Model({ finished: 0, failed: 0, total: network.gateways.length }),
 		});
 	}
 

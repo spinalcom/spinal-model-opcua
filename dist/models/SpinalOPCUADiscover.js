@@ -35,7 +35,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             creation: Date.now(),
             ask: false,
             askResponse: new spinal_core_connectorjs_type_1.Choice(0, Array.from(askChoicesSet)),
-            progress: new spinal_core_connectorjs_type_1.Model({ finished: 0, total: network.gateways.length })
+            progress: new spinal_core_connectorjs_type_1.Model({ finished: 0, failed: 0, total: network.gateways.length }),
         });
     }
     getGraph() {
