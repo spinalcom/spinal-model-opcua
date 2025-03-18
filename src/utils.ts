@@ -1,6 +1,7 @@
 import { Ptr, Str } from "spinal-core-connectorjs_type";
 import { IServer, INetwork } from "./interfaces";
 import axios from "axios";
+import axiosRetry from 'axios-retry';
 
 export function _formatNetwork(network: INetwork): INetwork {
 	network.gateways = network.gateways.map(el => _formatServer(el));
@@ -24,10 +25,11 @@ export function convertToBase64(tree: any): string {
 }
 
 
-export function getPathData(dynamicId: number, hubUrl?: string) {
-	const path = hubUrl ? `${hubUrl}/sceen/_?u=${dynamicId}` : `/sceen/_?u=${dynamicId}`;
-
-	return axios.get(path, { responseType: 'arraybuffer' }).then((response) => {
+export function getPathData(dynamicId: number, hubUrl: string = "") {
+	const path = `${hubUrl}/sceen/_?u=${dynamicId}`;
+	const client = axios.create({ baseURL: hubUrl });
+	axiosRetry(client, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+	return client.get(path, { responseType: 'arraybuffer' }).then((response) => {
 		// return Buffer.from(response.data);
 		return new Uint8Array(response.data);
 	});

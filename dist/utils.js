@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.waitModelReady = exports.getPathData = exports.convertToBase64 = exports._formatServer = exports._formatNetwork = void 0;
 const axios_1 = require("axios");
+const axios_retry_1 = require("axios-retry");
 function _formatNetwork(network) {
     network.gateways = network.gateways.map(el => _formatServer(el));
     return network;
@@ -23,9 +24,11 @@ function convertToBase64(tree) {
     return Buffer.from(JSON.stringify(tree)).toString("base64");
 }
 exports.convertToBase64 = convertToBase64;
-function getPathData(dynamicId, hubUrl) {
-    const path = hubUrl ? `${hubUrl}/sceen/_?u=${dynamicId}` : `/sceen/_?u=${dynamicId}`;
-    return axios_1.default.get(path, { responseType: 'arraybuffer' }).then((response) => {
+function getPathData(dynamicId, hubUrl = "") {
+    const path = `${hubUrl}/sceen/_?u=${dynamicId}`;
+    const client = axios_1.default.create({ baseURL: hubUrl });
+    (0, axios_retry_1.default)(client, { retries: 3, retryDelay: axios_retry_1.default.exponentialDelay });
+    return client.get(path, { responseType: 'arraybuffer' }).then((response) => {
         // return Buffer.from(response.data);
         return new Uint8Array(response.data);
     });

@@ -183,10 +183,6 @@ class SpinalOPCUADiscoverModel extends Model {
 		this.askResponse.set(Array.from(choicesSet).indexOf(choice));
 	}
 
-
-
-
-
 }
 
 
