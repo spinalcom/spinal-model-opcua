@@ -31,6 +31,7 @@ class SpinalOPCUADiscoverModel extends Model {
 			graph: new Pbr(graph),
 			treeDiscovered: new Ptr(),
 			treeToCreate: new Ptr(),
+			useLastResult: false,
 			// servers: new Lst(servers),
 			creation: Date.now(),
 			ask: false,

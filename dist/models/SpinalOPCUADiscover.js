@@ -31,6 +31,7 @@ class SpinalOPCUADiscoverModel extends spinal_core_connectorjs_type_1.Model {
             graph: new spinal_core_connectorjs_type_1.Pbr(graph),
             treeDiscovered: new spinal_core_connectorjs_type_1.Ptr(),
             treeToCreate: new spinal_core_connectorjs_type_1.Ptr(),
+            useLastResult: false,
             // servers: new Lst(servers),
             creation: Date.now(),
             ask: false,
