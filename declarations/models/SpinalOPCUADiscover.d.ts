@@ -16,7 +16,7 @@ declare class SpinalOPCUADiscoverModel extends Model {
     setTreeToCreate(json: any): Promise<void>;
     getTreeDiscovered(hubUrl?: string): Promise<any>;
     getTreeToCreate(hubUrl?: string): Promise<any>;
-    addToGraph(): Promise<SpinalOPCUADiscoverModel>;
+    addToGraph(): Promise<number>;
     removeFromGraph(): Promise<boolean>;
     changeState(state: OPCUA_ORGAN_STATES): void;
     changeChoice(choice: OPCUA_ORGAN_USER_CHOICE): void;

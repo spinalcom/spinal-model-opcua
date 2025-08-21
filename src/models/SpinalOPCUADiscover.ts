@@ -72,11 +72,6 @@ class SpinalOPCUADiscoverModel extends Model {
 
 
 	public async setTreeDiscovered(json: any) {
-		// // const compressed = await gzip(JSON.stringify(json));
-		// const compressed = Buffer.from(JSON.stringify(json));
-		// const path = new Path(compressed);
-		// // this.treeDiscovered.set(path); // le .set ne fonctionnait pas sur le browser
-		// this.mod_attr("treeDiscovered", new Ptr(path));
 
 		const compressed = await gzip.gzip(JSON.stringify(json));
 		const path = new Path(compressed);
@@ -85,12 +80,6 @@ class SpinalOPCUADiscoverModel extends Model {
 	}
 
 	public async setTreeToCreate(json: any) {
-		// // const compressed = await gzip(JSON.stringify(json));
-		// const compressed = Buffer.from(JSON.stringify(json));
-		// const path = new Path(compressed);
-		// // this.treeToCreate.set(path); // le .set ne fonctionnait pas sur le browser
-		// this.mod_attr("treeToCreate", new Ptr(path));
-
 		const compressed = await gzip.gzip(JSON.stringify(json));
 		const path = new Path(compressed);
 		this.mod_attr("treeToCreate", new Ptr(path));
@@ -98,15 +87,6 @@ class SpinalOPCUADiscoverModel extends Model {
 
 	public async getTreeDiscovered(hubUrl?: string) {
 		await waitModelReady(this.treeDiscovered);
-		// // const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
-		// // return pathData;
-		// // // const tree = await ungzip(pathData);
-		// // // return JSON.parse(tree.toString());
-
-		// const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
-		// const tree = await gzip.ungzip(pathData);
-
-		// return JSON.parse(tree.toString());
 
 		const pathData = await getPathData(this.treeDiscovered.data.value, hubUrl);
 		const decompressed = await gzip.ungzip(pathData);
@@ -116,10 +96,6 @@ class SpinalOPCUADiscoverModel extends Model {
 
 	public async getTreeToCreate(hubUrl?: string) {
 		await waitModelReady(this.treeToCreate);
-		// const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
-		// return pathData;
-		// // const tree = await ungzip(pathData);
-		// // return JSON.parse(tree.toString());
 
 		const pathData = await getPathData(this.treeToCreate.data.value, hubUrl);
 		const decompressed = await gzip.ungzip(pathData);
@@ -127,50 +103,55 @@ class SpinalOPCUADiscoverModel extends Model {
 
 	}
 
+	public addToGraph(): Promise<number> {
+		// return new Promise((resolve, reject) => {
+		return this.getOrgan().then((organ: SpinalOrganOPCUA) => {
 
-	public addToGraph(): Promise<SpinalOPCUADiscoverModel> {
-		return new Promise((resolve, reject) => {
-			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
-				if (organ.discover) {
-					organ.discover.load((list) => {
-						for (let i = 0; i < list.length; i++) {
-							const element = list[i];
-							if (element.id.get() === this.id.get()) return resolve(element);
-						}
-						list.push(this);
-						resolve(this);
-					});
-				} else {
-					organ.add_attr({
-						discover: new Ptr(new Lst([this])),
-					});
+			return organ.addDiscoverModelToGraph(this);
 
-					resolve(this);
-				}
-			});
+			// if (organ.discover) {
+			// 	organ.discover.load((list) => {
+			// 		for (let i = 0; i < list.length; i++) {
+			// 			const element = list[i];
+			// 			if (element.id.get() === this.id.get()) return resolve(element);
+			// 		}
+			// 		list.push(this);
+			// 		resolve(this);
+			// 	});
+			// } else {
+			// 	organ.add_attr({
+			// 		discover: new Ptr(new Lst([this])),
+			// 	});
+
+			// 	resolve(this);
+			// }
 		});
+		// });
 	}
 
 	public removeFromGraph(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
-				if (organ.discover) {
-					organ.discover.load((list) => {
-						for (let i = 0; i < list.length; i++) {
-							const element = list[i];
-							if (element.id.get() === this.id.get()) {
-								list.splice(i, 1);
-								return resolve(true);
-							}
-						}
+		// return new Promise((resolve, reject) => {
+		return this.getOrgan().then((organ: SpinalOrganOPCUA) => {
 
-						resolve(false);
-					});
-				} else {
-					resolve(false);
-				}
-			});
+			return organ.removeDiscoverModelFromGraph(this);
+
+			// if (organ.discover) {
+			// 	organ.discover.load((list) => {
+			// 		for (let i = 0; i < list.length; i++) {
+			// 			const element = list[i];
+			// 			if (element.id.get() === this.id.get()) {
+			// 				list.splice(i, 1);
+			// 				return resolve(true);
+			// 			}
+			// 		}
+
+			// 		resolve(false);
+			// 	});
+			// } else {
+			// 	resolve(false);
+			// }
 		});
+		// });
 	}
 
 	public changeState(state: OPCUA_ORGAN_STATES) {

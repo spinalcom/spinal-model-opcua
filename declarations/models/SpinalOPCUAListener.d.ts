@@ -10,6 +10,8 @@ declare class SpinalOPCUAListener extends Model {
     getBmsDevice(): Promise<SpinalNode>;
     getNetwork(): Promise<SpinalNode>;
     getProfile(): Promise<SpinalNode>;
+    addToGraph(): Promise<number>;
+    removeFromGraph(): Promise<boolean>;
     addToDevice(): Promise<void>;
     private _loadData;
 }

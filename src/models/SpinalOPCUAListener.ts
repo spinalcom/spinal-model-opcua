@@ -2,6 +2,7 @@ import { spinalCore, Model, Pbr } from 'spinal-core-connectorjs_type';
 import { SpinalContext, SpinalGraph, SpinalNode } from 'spinal-model-graph';
 import { v4 as uuidv4 } from "uuid";
 import { IDataNodes } from '../interfaces/IDataNodes';
+import SpinalOrganOPCUA from './SpinalOrganOPCUA';
 
 class SpinalOPCUAListener extends Model {
     constructor(graph?: SpinalGraph, context?: SpinalContext, organ?: SpinalNode, network?: SpinalNode, bmsDevice?: SpinalNode, profile?: SpinalNode, saveTimeSeries: boolean = false) {
@@ -58,6 +59,24 @@ class SpinalOPCUAListener extends Model {
 
     public getProfile(): Promise<SpinalNode> {
         return this._loadData('profile');
+    }
+
+    public addToGraph(): Promise<number> {
+        return this.getOrgan().then(async (organNode: SpinalNode) => {
+            const organModel = await organNode.getElement(true);
+            if (organModel) {
+                return organModel.addListenerToGraph(this);
+            }
+        })
+    }
+
+    public removeFromGraph(): Promise<boolean> {
+        return this.getOrgan().then(async (organNode: SpinalNode) => {
+            const organModel = await organNode.getElement(true);
+            if (organModel) {
+                return organModel.removeListenerModelFromGraph(this);
+            }
+        })
     }
 
     public addToDevice() {

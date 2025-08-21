@@ -42,6 +42,24 @@ class SpinalOPCUAPilot extends Model {
         });
     }
 
+    public addToGraph(): Promise<number> {
+        return this.getOrgan().then(async (organNode: SpinalNode) => {
+            const organModel = await organNode.getElement(true);
+            if (organModel) {
+                return organModel.addPilotToGraph(this);
+            }
+        })
+    }
+
+    public removeFromGraph(): Promise<boolean> {
+        return this.getOrgan().then(async (organNode: SpinalNode) => {
+            const organModel = await organNode.getElement(true);
+            if (organModel) {
+                return organModel.removePilotModelFromGraph(this);
+            }
+        })
+    }
+
     public addToNode(endpoint: SpinalNode<any>): Promise<any> {
         return new Promise((resolve) => {
             if (!endpoint.info.pilot) {

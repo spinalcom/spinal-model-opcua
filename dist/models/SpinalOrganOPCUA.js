@@ -27,6 +27,7 @@ exports.SpinalOrganOPCUA = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
+const modelsToBind_1 = require("./modelsToBind");
 class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
     constructor(name, type = constants_1.OPCUA_ORGAN_TYPE) {
         super();
@@ -38,7 +39,22 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
             type,
             references: {},
             restart: false,
+            discover: new modelsToBind_1.default(),
+            pilot: new modelsToBind_1.default(),
+            listener: new modelsToBind_1.default(),
         });
+    }
+    _initializeModelsList() {
+        if (!this.discover)
+            this.add_attr({ discover: new modelsToBind_1.default() });
+        if (!this.pilot)
+            this.add_attr({ pilot: new modelsToBind_1.default() });
+        if (!this.listener)
+            this.add_attr({ listener: new modelsToBind_1.default() });
+    }
+    getModels() {
+        this._initializeModelsList();
+        return { discover: this.discover, pilot: this.pilot, listener: this.listener };
     }
     addReference(contextId, spinalNode) {
         if (this.references[contextId]) {
@@ -74,6 +90,24 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
                 });
             });
         }
+    }
+    addDiscoverModelToGraph(discoverModel) {
+        return this.discover.addModel(discoverModel);
+    }
+    addPilotModelToGraph(discoverModel) {
+        return this.pilot.addModel(discoverModel);
+    }
+    addListenerModelToGraph(discoverModel) {
+        return this.listener.addModel(discoverModel);
+    }
+    removeDiscoverModelFromGraph(discoverModel) {
+        return this.discover.removeModel(discoverModel);
+    }
+    removePilotModelFromGraph(discoverModel) {
+        return this.pilot.removeModel(discoverModel);
+    }
+    removeListenerModelFromGraph(discoverModel) {
+        return this.listener.removeModel(discoverModel);
     }
 }
 exports.SpinalOrganOPCUA = SpinalOrganOPCUA;
