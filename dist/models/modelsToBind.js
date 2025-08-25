@@ -15,6 +15,7 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
     constructor() {
         super();
         this.add_attr({
+            modification_date: Date.now(),
             length: 0,
             data: new spinal_core_connectorjs_1.Ptr(new spinal_core_connectorjs_1.Lst())
         });

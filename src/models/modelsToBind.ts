@@ -1,12 +1,10 @@
 import { Lst, Model, Ptr, spinalCore } from "spinal-core-connectorjs";
-import SpinalOPCUADiscoverModel from "./SpinalOPCUADiscover";
-import { Mode } from "fs";
-
 
 export default class ModelsInfo<T extends Model> extends Model {
     constructor() {
         super();
         this.add_attr({
+            modification_date: Date.now(),
             length: 0,
             data: new Ptr(new Lst())
         })
