@@ -18,7 +18,7 @@ export default class ModelsInfo<T extends Model> extends Model {
     }
 
     public getModels(): Promise<Lst<T>> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.data.load((discoverList) => resolve(discoverList));
         });
     }

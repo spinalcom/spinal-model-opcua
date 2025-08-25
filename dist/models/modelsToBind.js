@@ -29,7 +29,7 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
         });
     }
     getModels() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.data.load((discoverList) => resolve(discoverList));
         });
     }

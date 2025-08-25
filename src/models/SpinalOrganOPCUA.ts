@@ -101,6 +101,8 @@ class SpinalOrganOPCUA extends Model {
 		}
 	}
 
+	//// ADD MODELS
+
 	public addDiscoverModelToGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<number> {
 		return this.discover.addModel(discoverModel);
 	}
@@ -113,6 +115,9 @@ class SpinalOrganOPCUA extends Model {
 		return this.listener.addModel(discoverModel);
 	}
 
+
+    //// REMOVE MODELS
+
 	public removeDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean> {
 		return this.discover.removeModel(discoverModel);
 	}
@@ -124,6 +129,22 @@ class SpinalOrganOPCUA extends Model {
 	public removeListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean> {
 		return this.listener.removeModel(discoverModel);
 	}
+
+	  //// GET MODELS
+
+	public getDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean> {
+		return this.discover.getModels(discoverModel);
+	}
+
+	public getPilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean> {
+		return this.pilot.getModels(discoverModel);
+	}
+
+	public getListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean> {
+		return this.listener.getModels(discoverModel);
+	}
+
+	
 }
 
 spinalCore.register_models([SpinalOrganOPCUA]);

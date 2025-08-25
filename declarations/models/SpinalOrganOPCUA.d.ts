@@ -24,6 +24,9 @@ declare class SpinalOrganOPCUA extends Model {
     removeDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean>;
     removePilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean>;
     removeListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean>;
+    getDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean>;
+    getPilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean>;
+    getListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean>;
 }
 export default SpinalOrganOPCUA;
 export { SpinalOrganOPCUA };

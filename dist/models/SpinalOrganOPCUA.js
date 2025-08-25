@@ -91,6 +91,7 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
             });
         }
     }
+    //// ADD MODELS
     addDiscoverModelToGraph(discoverModel) {
         return this.discover.addModel(discoverModel);
     }
@@ -100,6 +101,7 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
     addListenerModelToGraph(discoverModel) {
         return this.listener.addModel(discoverModel);
     }
+    //// REMOVE MODELS
     removeDiscoverModelFromGraph(discoverModel) {
         return this.discover.removeModel(discoverModel);
     }
@@ -108,6 +110,16 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
     }
     removeListenerModelFromGraph(discoverModel) {
         return this.listener.removeModel(discoverModel);
+    }
+    //// GET MODELS
+    getDiscoverModelFromGraph(discoverModel) {
+        return this.discover.getModels(discoverModel);
+    }
+    getPilotModelFromGraph(discoverModel) {
+        return this.pilot.getModels(discoverModel);
+    }
+    getListenerModelFromGraph(discoverModel) {
+        return this.listener.getModels(discoverModel);
     }
 }
 exports.SpinalOrganOPCUA = SpinalOrganOPCUA;
