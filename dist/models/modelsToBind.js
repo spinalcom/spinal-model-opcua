@@ -22,7 +22,7 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
     }
     addModel(discoverModel) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dataList = yield this.getDiscoverModels();
+            const dataList = yield this.getModels();
             dataList.push(discoverModel);
             this.length.set(dataList.length);
             return dataList.length;
@@ -35,7 +35,7 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
     }
     removeModel(discoverModel) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dataList = yield this.getDiscoverModels();
+            const dataList = yield this.getModels();
             const lengthBeforeRemove = dataList.length;
             dataList.remove(discoverModel);
             this.length.set(dataList.length);

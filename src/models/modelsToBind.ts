@@ -11,7 +11,7 @@ export default class ModelsInfo<T extends Model> extends Model {
     }
 
     public async addModel(discoverModel: T): Promise<number> {
-        const dataList = await this.getDiscoverModels();
+        const dataList = await this.getModels();
         dataList.push(discoverModel);
         this.length.set(dataList.length);
         return dataList.length;
@@ -25,7 +25,7 @@ export default class ModelsInfo<T extends Model> extends Model {
 
     public async removeModel(discoverModel: T): Promise<boolean> {
 
-        const dataList = await this.getDiscoverModels();
+        const dataList = await this.getModels();
         const lengthBeforeRemove = dataList.length;
         dataList.remove(discoverModel);
         this.length.set(dataList.length);
