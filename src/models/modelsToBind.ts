@@ -23,6 +23,19 @@ export default class ModelsInfo<T extends Model> extends Model {
         });
     }
 
+    public consumeModels(): Promise<T[]> {
+        return new Promise((resolve) => {
+            this.data.load((discoverList) => {
+                this.length.set(0);
+
+                const arr: T[] = Array.from(discoverList);
+                
+                discoverList.clear();
+                resolve(arr);
+            });
+        })
+}
+
     public async removeModel(discoverModel: T): Promise<boolean> {
 
         const dataList = await this.getModels();

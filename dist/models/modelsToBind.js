@@ -33,6 +33,16 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
             this.data.load((discoverList) => resolve(discoverList));
         });
     }
+    consumeModels() {
+        return new Promise((resolve) => {
+            this.data.load((discoverList) => {
+                this.length.set(0);
+                const arr = Array.from(discoverList);
+                discoverList.clear();
+                resolve(arr);
+            });
+        });
+    }
     removeModel(discoverModel) {
         return __awaiter(this, void 0, void 0, function* () {
             const dataList = yield this.getModels();
