@@ -93,33 +93,43 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
     }
     //// ADD MODELS
     addDiscoverModelToGraph(discoverModel) {
+        this._initializeModelsList();
         return this.discover.addModel(discoverModel);
     }
     addPilotModelToGraph(discoverModel) {
+        this._initializeModelsList();
         return this.pilot.addModel(discoverModel);
     }
     addListenerModelToGraph(discoverModel) {
+        this._initializeModelsList();
         return this.listener.addModel(discoverModel);
     }
     //// REMOVE MODELS
     removeDiscoverModelFromGraph(discoverModel) {
-        return this.discover.removeModel(discoverModel);
+        if (this.discover)
+            return this.discover.removeModel(discoverModel);
     }
     removePilotModelFromGraph(discoverModel) {
-        return this.pilot.removeModel(discoverModel);
+        if (this.pilot)
+            return this.pilot.removeModel(discoverModel);
     }
     removeListenerModelFromGraph(discoverModel) {
-        return this.listener.removeModel(discoverModel);
+        this._initializeModelsList();
+        if (this.listener)
+            return this.listener.removeModel(discoverModel);
     }
     //// GET MODELS
-    getDiscoverModelFromGraph(discoverModel) {
-        return this.discover.getModels(discoverModel);
+    getDiscoverModelFromGraph() {
+        this._initializeModelsList();
+        return this.discover.getModels();
     }
-    getPilotModelFromGraph(discoverModel) {
-        return this.pilot.getModels(discoverModel);
+    getPilotModelFromGraph() {
+        this._initializeModelsList();
+        return this.pilot.getModels();
     }
-    getListenerModelFromGraph(discoverModel) {
-        return this.listener.getModels(discoverModel);
+    getListenerModelFromGraph() {
+        this._initializeModelsList();
+        return this.listener.getModels();
     }
 }
 exports.SpinalOrganOPCUA = SpinalOrganOPCUA;

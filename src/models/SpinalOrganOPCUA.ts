@@ -22,7 +22,7 @@
  * <http://resources.spinalcom.com/licenses.pdf>.
  */
 
-import { spinalCore, Model, Ptr } from "spinal-core-connectorjs_type";
+import { spinalCore, Model, Ptr, Lst } from "spinal-core-connectorjs_type";
 import { SpinalNode } from "spinal-model-graph";
 import { v4 as uuidv4 } from "uuid";
 import { OPCUA_ORGAN_TYPE } from "../constants";
@@ -104,14 +104,17 @@ class SpinalOrganOPCUA extends Model {
 	//// ADD MODELS
 
 	public addDiscoverModelToGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<number> {
+		this._initializeModelsList();
 		return this.discover.addModel(discoverModel);
 	}
 
 	public addPilotModelToGraph(discoverModel: SpinalOPCUAPilot): Promise<number> {
+		this._initializeModelsList();
 		return this.pilot.addModel(discoverModel);
 	}
 
 	public addListenerModelToGraph(discoverModel: SpinalOPCUAListener): Promise<number> {
+		this._initializeModelsList();
 		return this.listener.addModel(discoverModel);
 	}
 
@@ -119,29 +122,33 @@ class SpinalOrganOPCUA extends Model {
     //// REMOVE MODELS
 
 	public removeDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean> {
-		return this.discover.removeModel(discoverModel);
+		if(this.discover) return this.discover.removeModel(discoverModel);
 	}
 
 	public removePilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean> {
-		return this.pilot.removeModel(discoverModel);
+		if(this.pilot) return this.pilot.removeModel(discoverModel);
 	}
 
 	public removeListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean> {
-		return this.listener.removeModel(discoverModel);
+		this._initializeModelsList();
+		if(this.listener) return this.listener.removeModel(discoverModel);
 	}
 
 	  //// GET MODELS
 
-	public getDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean> {
-		return this.discover.getModels(discoverModel);
+	public getDiscoverModelFromGraph(): Promise<Lst<SpinalOPCUADiscoverModel>> {
+		this._initializeModelsList();
+		return this.discover.getModels();
 	}
 
-	public getPilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean> {
-		return this.pilot.getModels(discoverModel);
+	public getPilotModelFromGraph(): Promise<Lst<SpinalOPCUAPilot>> {
+		this._initializeModelsList();
+		return this.pilot.getModels();
 	}
 
-	public getListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean> {
-		return this.listener.getModels(discoverModel);
+	public getListenerModelFromGraph(): Promise<Lst<SpinalOPCUAListener>> {
+		this._initializeModelsList();
+		return this.listener.getModels();
 	}
 
 	

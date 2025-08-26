@@ -1,4 +1,4 @@
-import { Model } from "spinal-core-connectorjs_type";
+import { Model, Lst } from "spinal-core-connectorjs_type";
 import { SpinalNode } from "spinal-model-graph";
 import SpinalOPCUADiscoverModel from "./SpinalOPCUADiscover";
 import ModelsInfo from "./modelsToBind";
@@ -24,9 +24,9 @@ declare class SpinalOrganOPCUA extends Model {
     removeDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean>;
     removePilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean>;
     removeListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean>;
-    getDiscoverModelFromGraph(discoverModel: SpinalOPCUADiscoverModel): Promise<boolean>;
-    getPilotModelFromGraph(discoverModel: SpinalOPCUAPilot): Promise<boolean>;
-    getListenerModelFromGraph(discoverModel: SpinalOPCUAListener): Promise<boolean>;
+    getDiscoverModelFromGraph(): Promise<Lst<SpinalOPCUADiscoverModel>>;
+    getPilotModelFromGraph(): Promise<Lst<SpinalOPCUAPilot>>;
+    getListenerModelFromGraph(): Promise<Lst<SpinalOPCUAListener>>;
 }
 export default SpinalOrganOPCUA;
 export { SpinalOrganOPCUA };
