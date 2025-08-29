@@ -25,6 +25,7 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
             const dataList = yield this.getModels();
             dataList.push(discoverModel);
             this.length.set(dataList.length);
+            this.modification_date.set(Date.now());
             return dataList.length;
         });
     }

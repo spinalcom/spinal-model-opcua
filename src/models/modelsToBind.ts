@@ -14,6 +14,7 @@ export default class ModelsInfo<T extends Model> extends Model {
         const dataList = await this.getModels();
         dataList.push(discoverModel);
         this.length.set(dataList.length);
+        this.modification_date.set(Date.now());
         return dataList.length;
     }
 
