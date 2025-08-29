@@ -27,6 +27,9 @@ declare class SpinalOrganOPCUA extends Model {
     getDiscoverModelFromGraph(): Promise<Lst<SpinalOPCUADiscoverModel>>;
     getPilotModelFromGraph(): Promise<Lst<SpinalOPCUAPilot>>;
     getListenerModelFromGraph(): Promise<Lst<SpinalOPCUAListener>>;
+    consumeDiscoverModelFromGraph(): Promise<SpinalOPCUADiscoverModel[]>;
+    consumePilotModelFromGraph(): Promise<SpinalOPCUAPilot[]>;
+    consumeListenerModelFromGraph(): Promise<SpinalOPCUAListener[]>;
 }
 export default SpinalOrganOPCUA;
 export { SpinalOrganOPCUA };

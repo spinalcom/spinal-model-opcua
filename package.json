@@ -1,29 +1,31 @@
 {
-	"name": "spinal-model-opcua",
-	"version": "1.7.8",
-	"description": "",
-	"main": "dist/index.js",
-	"scripts": {
-		"clean": "rimraf dist",
-		"build": "npm run clean && tsc",
-		"dev": "npm run clean && && tsc --watch & nodemon dist",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"atob": "^2.1.2",
-		"axios": "^1.7.7",
-		"axios-retry": "^4.5.0",
-		"node-gzip": "^1.1.2",
-		"spinal-core-connectorjs_type": "git+https://github.com/spinalcom/spinal-core-connectorjs_type.git",
-		"spinal-model-graph": "git+https://github.com/spinalcom/spinal-model-graph.git",
-		"uuid": "^9.0.1"
-	},
-	"devDependencies": {
-		"@types/node": "^20.11.16",
-		"rimraf": "^5.0.5",
-		"typescript": "^5.9.2"
-	}
+  "name": "spinal-model-opcua",
+  "version": "1.7.8",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "dev": "npm run clean && && tsc --watch & nodemon dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "atob": "^2.1.2",
+    "axios": "^1.7.7",
+    "axios-retry": "^4.5.0",
+    "node-gzip": "^1.1.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.9.2"
+  },
+  "spinalDependencies": {
+    "spinal-core-connectorjs_type": "spinal-core-connectorjs_type",
+    "spinal-model-graph": "spinal-model-graph"
+  }
 }

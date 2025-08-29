@@ -131,6 +131,19 @@ class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
         this._initializeModelsList();
         return this.listener.getModels();
     }
+    ///// CONSUME MODELS
+    consumeDiscoverModelFromGraph() {
+        this._initializeModelsList();
+        return this.discover.consumeModels();
+    }
+    consumePilotModelFromGraph() {
+        this._initializeModelsList();
+        return this.pilot.consumeModels();
+    }
+    consumeListenerModelFromGraph() {
+        this._initializeModelsList();
+        return this.listener.consumeModels();
+    }
 }
 exports.SpinalOrganOPCUA = SpinalOrganOPCUA;
 SpinalOrganOPCUA.TYPE = constants_1.OPCUA_ORGAN_TYPE;

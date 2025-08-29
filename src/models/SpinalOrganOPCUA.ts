@@ -151,6 +151,23 @@ class SpinalOrganOPCUA extends Model {
 		return this.listener.getModels();
 	}
 
+	///// CONSUME MODELS
+
+	public consumeDiscoverModelFromGraph(): Promise<SpinalOPCUADiscoverModel[]> {
+		this._initializeModelsList();
+		return this.discover.consumeModels();
+	}
+
+	public consumePilotModelFromGraph(): Promise<SpinalOPCUAPilot[]> {
+		this._initializeModelsList();
+		return this.pilot.consumeModels();
+	}
+
+	public consumeListenerModelFromGraph(): Promise<SpinalOPCUAListener[]> {
+		this._initializeModelsList();
+		return this.listener.consumeModels();
+	}
+
 	
 }
 
