@@ -62,12 +62,10 @@ class SpinalOPCUAListener extends Model {
     }
 
     public addToGraph(): Promise<number> {
-        const promises = [this.getOrgan(), this.getBmsDevice()];
-
-        return Promise.all(promises).then(async ([organNode, deviceNode]: SpinalNode[]) => {
+        return this.getOrgan().then(async (organNode: SpinalNode) => {
             const organModel = await organNode.getElement(true);
             if (organModel) {
-                deviceNode.info.add_attr({ listener: new Pbr(this) }); // add reference to listener in device
+                await this.addToDevice(); // add reference to listener in device
                 return organModel.addListenerToGraph(this); // add listener to organ listener list
             }
         })
