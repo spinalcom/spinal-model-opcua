@@ -65,7 +65,7 @@ class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
             const organModel = yield organNode.getElement(true);
             if (organModel) {
                 yield this.addToDevice(); // add reference to listener in device
-                return organModel.addListenerToGraph(this); // add listener to organ listener list
+                return organModel.addListenerModelToGraph(this); // add listener to organ listener list
             }
         }));
     }

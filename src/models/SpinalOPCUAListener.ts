@@ -66,7 +66,7 @@ class SpinalOPCUAListener extends Model {
             const organModel = await organNode.getElement(true);
             if (organModel) {
                 await this.addToDevice(); // add reference to listener in device
-                return organModel.addListenerToGraph(this); // add listener to organ listener list
+                return organModel.addListenerModelToGraph(this); // add listener to organ listener list
             }
         })
     }
