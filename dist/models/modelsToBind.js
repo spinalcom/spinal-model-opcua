@@ -20,10 +20,10 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
             data: new spinal_core_connectorjs_1.Ptr(new spinal_core_connectorjs_1.Lst())
         });
     }
-    addModel(discoverModel) {
+    addModel(model) {
         return __awaiter(this, void 0, void 0, function* () {
             const dataList = yield this.getModels();
-            dataList.push(discoverModel);
+            dataList.push(model);
             this.length.set(dataList.length);
             this.modification_date.set(Date.now());
             return dataList.length;
@@ -44,11 +44,11 @@ class ModelsInfo extends spinal_core_connectorjs_1.Model {
             });
         });
     }
-    removeModel(discoverModel) {
+    removeModel(model) {
         return __awaiter(this, void 0, void 0, function* () {
             const dataList = yield this.getModels();
             const lengthBeforeRemove = dataList.length;
-            dataList.remove(discoverModel);
+            dataList.remove(model);
             this.length.set(dataList.length);
             return this.length.get() < lengthBeforeRemove;
         });

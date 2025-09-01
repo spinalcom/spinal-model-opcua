@@ -10,9 +10,9 @@ export default class ModelsInfo<T extends Model> extends Model {
         })
     }
 
-    public async addModel(discoverModel: T): Promise<number> {
+    public async addModel(model: T): Promise<number> {
         const dataList = await this.getModels();
-        dataList.push(discoverModel);
+        dataList.push(model);
         this.length.set(dataList.length);
         this.modification_date.set(Date.now());
         return dataList.length;
@@ -37,11 +37,11 @@ export default class ModelsInfo<T extends Model> extends Model {
         })
 }
 
-    public async removeModel(discoverModel: T): Promise<boolean> {
-
+    public async removeModel(model: T): Promise<boolean> {
         const dataList = await this.getModels();
         const lengthBeforeRemove = dataList.length;
-        dataList.remove(discoverModel);
+        dataList.remove(model);
+
         this.length.set(dataList.length);
 
         return this.length.get() < lengthBeforeRemove;

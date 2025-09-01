@@ -61,18 +61,22 @@ class SpinalOPCUAListener extends spinal_core_connectorjs_type_1.Model {
         return this._loadData('profile');
     }
     addToGraph() {
-        return this.getOrgan().then((organNode) => __awaiter(this, void 0, void 0, function* () {
+        const promises = [this.getOrgan(), this.getBmsDevice()];
+        return Promise.all(promises).then((_a) => __awaiter(this, [_a], void 0, function* ([organNode, deviceNode]) {
             const organModel = yield organNode.getElement(true);
             if (organModel) {
-                return organModel.addListenerToGraph(this);
+                deviceNode.info.add_attr({ listener: new spinal_core_connectorjs_type_1.Pbr(this) }); // add reference to listener in device
+                return organModel.addListenerToGraph(this); // add listener to organ listener list
             }
         }));
     }
     removeFromGraph() {
-        return this.getOrgan().then((organNode) => __awaiter(this, void 0, void 0, function* () {
+        const promises = [this.getOrgan(), this.getBmsDevice()];
+        return Promise.all(promises).then((_a) => __awaiter(this, [_a], void 0, function* ([organNode, deviceNode]) {
             const organModel = yield organNode.getElement(true);
             if (organModel) {
-                return organModel.removeListenerModelFromGraph(this);
+                deviceNode.info.remove_attr('listener'); // remove reference to listener in device
+                return organModel.removeListenerModelFromGraph(this); // remove listener from organ listener list
             }
         }));
     }
