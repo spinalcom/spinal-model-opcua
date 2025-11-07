@@ -8,6 +8,8 @@ declare class SpinalOPCUAPilot extends Model {
     setSuccessMode(): void;
     setErrorMode(): void;
     getOrgan(): Promise<SpinalNode>;
+    addToGraph(endpoint: SpinalNode<any>): Promise<any>;
+    removeFromGraph(): Promise<any>;
     addToNode(endpoint: SpinalNode<any>): Promise<any>;
     removeFromNode(): Promise<any>;
 }

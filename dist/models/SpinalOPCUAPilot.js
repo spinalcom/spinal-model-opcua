@@ -32,6 +32,12 @@ class SpinalOPCUAPilot extends spinal_core_connectorjs_type_1.Model {
             this.organ.load(value => resolve(value));
         });
     }
+    addToGraph(endpoint) {
+        return this.addToNode(endpoint);
+    }
+    removeFromGraph() {
+        return this.removeFromNode();
+    }
     addToNode(endpoint) {
         return new Promise((resolve) => {
             if (!endpoint.info.pilot) {

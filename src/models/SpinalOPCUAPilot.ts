@@ -42,6 +42,14 @@ class SpinalOPCUAPilot extends Model {
         });
     }
 
+    public addToGraph(endpoint: SpinalNode<any>): Promise<any> {
+        return this.addToNode(endpoint);
+    }
+
+    public removeFromGraph(): Promise<any> {
+        return this.removeFromNode();
+    }
+
     public addToNode(endpoint: SpinalNode<any>): Promise<any> {
         return new Promise((resolve) => {
             if (!endpoint.info.pilot) {
