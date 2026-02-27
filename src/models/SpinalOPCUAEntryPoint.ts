@@ -1,9 +1,9 @@
 import { spinalCore, Model, Lst, Choice, Str, Pbr, Ptr } from "spinal-core-connectorjs_type";
 import { v4 as uuidv4 } from "uuid";
-import { SpinalContext, SpinalGraph } from "spinal-model-graph";
+import { SpinalContext, SpinalGraph, SpinalNode } from "spinal-model-graph";
 import SpinalOrganOPCUA from "./SpinalOrganOPCUA";
 import { INetwork } from "../interfaces";
-import { _formatNetwork, convertToBase64, waitModelReady } from "../utils";
+import { _formatNetwork, convertToBase64, loadPtr, waitModelReady } from "../utils";
 
 
 class SpinalOPCUAEntryPoint extends Model {
@@ -28,32 +28,24 @@ class SpinalOPCUAEntryPoint extends Model {
 	}
 
 	public getGraph(): Promise<SpinalGraph> {
-		return new Promise((resolve, reject) => {
-			try {
-				this.graph.load((data) => resolve(data));
-			} catch (error) {
-				reject(error);
-			}
+		return loadPtr(this.graph).catch((error) => {
+			return;
 		});
 	}
 
+
 	public getOrgan(): Promise<SpinalOrganOPCUA> {
-		return new Promise((resolve, reject) => {
-			try {
-				this.organ.load((data) => resolve(data));
-			} catch (error) {
-				reject(error);
-			}
+		return loadPtr(this.organ).then(async (organ) => {
+			if (organ instanceof SpinalNode) organ = organ.getElement(true);
+			return organ;
+		}).catch((error) => {
+			return;
 		});
 	}
 
 	public getContext(): Promise<SpinalContext> {
-		return new Promise((resolve, reject) => {
-			try {
-				this.context.load((data) => resolve(data));
-			} catch (error) {
-				reject(error);
-			}
+		return loadPtr(this.context).catch((error) => {
+			return;
 		});
 	}
 
@@ -74,48 +66,43 @@ class SpinalOPCUAEntryPoint extends Model {
 	}
 
 	public addToGraph(): Promise<SpinalOPCUAEntryPoint> {
-		return new Promise((resolve, reject) => {
-			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
-				if (organ.entryPoints) {
-					organ.entryPoints.load((list) => {
-						for (let i = 0; i < list.length; i++) {
-							const element = list[i];
-							if (element.id.get() === this.id.get()) return resolve(element);
-						}
-						list.push(this);
-						resolve(this);
-					});
-				} else {
-					organ.add_attr({
-						entryPoints: new Ptr(new Lst([this])),
-					});
+		return this.getOrgan().then(async (organ: SpinalOrganOPCUA) => {
+			if (!organ) return;
+			if (!organ.entryPoints) {
+				organ.add_attr({ entryPoints: new Ptr(new Lst([this])) });
+				return organ;
+			}
 
-					resolve(this);
-				}
-			});
+			const list = await loadPtr(organ.entryPoints);
+
+			// check if already in list
+			for (let i = 0; i < list.length; i++) {
+				const element = list[i];
+				if (element.id.get() === this.id.get()) return element; // already in list
+			}
+
+			// not in list, add it
+			list.push(this);
+			return this;
 		});
 	}
 
-	public removeFromGraph(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.getOrgan().then((organ: SpinalOrganOPCUA) => {
-				if (organ.entryPoints) {
-					organ.entryPoints.load((list) => {
-						for (let i = 0; i < list.length; i++) {
-							const element = list[i];
-							if (element.id.get() === this.id.get()) {
-								list.splice(i, 1);
-								return resolve(true);
-							}
-						}
+	public async removeFromGraph(): Promise<boolean> {
+		const organ = await loadPtr(this.organ);
+		if (!organ || !organ.entryPoints) return false;
 
-						resolve(false);
-					});
-				} else {
-					resolve(false);
-				}
-			});
-		});
+		const list = await loadPtr(organ.entryPoints);
+		if (!list) return false;
+
+		for (let i = 0; i < list.length; i++) {
+			const element = list[i];
+			if (element.id.get() === this.id.get()) {
+				list.remove(element);
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 

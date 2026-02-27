@@ -1,13 +1,11 @@
-import { Model } from "spinal-core-connectorjs_type";
-import { SpinalNode } from "spinal-model-graph";
-declare class SpinalOrganOPCUA extends Model {
+import { SpinalOrganModel } from "spinal-connector-service";
+import SpinalOPCUADiscoverModel from "./SpinalOPCUADiscover";
+import SpinalOPCUAPilot from "./SpinalOPCUAPilot";
+import SpinalOPCUAListener from "./SpinalOPCUAListener";
+declare class SpinalOrganOPCUA extends SpinalOrganModel<SpinalOPCUADiscoverModel, SpinalOPCUAPilot, SpinalOPCUAListener> {
     static TYPE: string;
     static CONTEXT_TO_ORGAN_RELATION: string;
-    references: any;
     constructor(name?: string, type?: string);
-    addReference(contextId: string, spinalNode: SpinalNode<any>): Promise<SpinalNode<any>>;
-    isReferencedInContext(contextId: string): Promise<boolean>;
-    removeReference(contextId: string): Promise<SpinalNode> | void;
 }
 export default SpinalOrganOPCUA;
 export { SpinalOrganOPCUA };

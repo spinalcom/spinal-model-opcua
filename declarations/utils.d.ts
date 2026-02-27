@@ -5,3 +5,4 @@ export declare function _formatServer(server: IServer): IServer;
 export declare function convertToBase64(tree: any): string;
 export declare function getPathData(dynamicId: number, hubUrl?: string): Promise<Uint8Array<any>>;
 export declare function waitModelReady(model: Ptr): Promise<unknown>;
+export declare function loadPtr(ptr: spinal.Ptr | spinal.Pbr): Promise<any>;

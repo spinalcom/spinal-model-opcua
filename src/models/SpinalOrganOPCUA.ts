@@ -22,66 +22,23 @@
  * <http://resources.spinalcom.com/licenses.pdf>.
  */
 
-import { spinalCore, Model, Ptr, Lst } from "spinal-core-connectorjs_type";
-import { SpinalNode } from "spinal-model-graph";
-import { v4 as uuidv4 } from "uuid";
+import { spinalCore } from "spinal-core-connectorjs_type";
 import { OPCUA_ORGAN_TYPE } from "../constants";
+import { SpinalOrganModel } from "spinal-connector-service";
+import SpinalOPCUADiscoverModel from "./SpinalOPCUADiscover";
+import SpinalOPCUAPilot from "./SpinalOPCUAPilot";
+import SpinalOPCUAListener from "./SpinalOPCUAListener";
 
-class SpinalOrganOPCUA extends Model {
+class SpinalOrganOPCUA extends SpinalOrganModel<SpinalOPCUADiscoverModel, SpinalOPCUAPilot, SpinalOPCUAListener> {
 	static TYPE: string = OPCUA_ORGAN_TYPE;
 	static CONTEXT_TO_ORGAN_RELATION: string = "hasBmsNetworkOrgan";
 
-	references: any;
 
 	constructor(name?: string, type: string = OPCUA_ORGAN_TYPE) {
-		super();
+		super(name, type);
 		if (!name) return;
-
-		this.add_attr({
-			id: uuidv4(),
-			name,
-			type,
-			references: {},
-			restart: false,
-		});
 	}
 
-	public addReference(contextId: string, spinalNode: SpinalNode<any>): Promise<SpinalNode<any>> {
-		if (this.references[contextId]) {
-			return new Promise((resolve, reject) => {
-				this.references[contextId].load((e) => {
-					if (typeof e !== "undefined") return reject("The organ is already linked to this context");
-					this.references.mod_attr(contextId, new Ptr(spinalNode));
-					resolve(spinalNode);
-				});
-			});
-		}
-
-		this.references.add_attr({ [contextId]: new Ptr(spinalNode) });
-		return Promise.resolve(spinalNode);
-	}
-
-	public isReferencedInContext(contextId: string): Promise<boolean> {
-		if (typeof this.references[contextId] === "undefined") return Promise.resolve(false);
-
-		return new Promise((resolve, reject) => {
-			this.references[contextId].load((e) => {
-				if (typeof e === "undefined") return resolve(false);
-				resolve(true);
-			});
-		});
-	}
-
-	public removeReference(contextId: string): Promise<SpinalNode> | void {
-		if (this.references[contextId]) {
-			return new Promise((resolve, reject) => {
-				this.references[contextId].load((node) => {
-					this.references.rem_attr(contextId);
-					resolve(node);
-				});
-			});
-		}
-	}
 }
 
 spinalCore.register_models([SpinalOrganOPCUA]);

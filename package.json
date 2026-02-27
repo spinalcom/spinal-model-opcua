@@ -26,6 +26,7 @@
   },
   "spinalDependencies": {
     "spinal-core-connectorjs_type": "spinal-core-connectorjs_type",
-    "spinal-model-graph": "spinal-model-graph"
+    "spinal-model-graph": "spinal-model-graph",
+    "spinal-connector-service": "spinal-connector-service"
   }
 }

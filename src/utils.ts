@@ -62,6 +62,15 @@ export function waitModelReady(model: Ptr) {
 	});
 }
 
+export function loadPtr(ptr: spinal.Ptr | spinal.Pbr): Promise<any> {
+	return new Promise((resolve, reject) => {
+		try {
+			ptr.load((data) => resolve(data));
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
 
 // export function waitModelReady(model: Str) {
 // 	const delay = 3000;

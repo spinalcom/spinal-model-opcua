@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpinalOPCUAEntryPoint = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
 const uuid_1 = require("uuid");
+const spinal_model_graph_1 = require("spinal-model-graph");
 const utils_1 = require("../utils");
 class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
     constructor(graph, context, organ, network) {
@@ -28,33 +29,22 @@ class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
         });
     }
     getGraph() {
-        return new Promise((resolve, reject) => {
-            try {
-                this.graph.load((data) => resolve(data));
-            }
-            catch (error) {
-                reject(error);
-            }
+        return (0, utils_1.loadPtr)(this.graph).catch((error) => {
+            return;
         });
     }
     getOrgan() {
-        return new Promise((resolve, reject) => {
-            try {
-                this.organ.load((data) => resolve(data));
-            }
-            catch (error) {
-                reject(error);
-            }
+        return (0, utils_1.loadPtr)(this.organ).then((organ) => __awaiter(this, void 0, void 0, function* () {
+            if (organ instanceof spinal_model_graph_1.SpinalNode)
+                organ = organ.getElement(true);
+            return organ;
+        })).catch((error) => {
+            return;
         });
     }
     getContext() {
-        return new Promise((resolve, reject) => {
-            try {
-                this.context.load((data) => resolve(data));
-            }
-            catch (error) {
-                reject(error);
-            }
+        return (0, utils_1.loadPtr)(this.context).catch((error) => {
+            return;
         });
     }
     setTree(json) {
@@ -72,47 +62,41 @@ class SpinalOPCUAEntryPoint extends spinal_core_connectorjs_type_1.Model {
         });
     }
     addToGraph() {
-        return new Promise((resolve, reject) => {
-            this.getOrgan().then((organ) => {
-                if (organ.entryPoints) {
-                    organ.entryPoints.load((list) => {
-                        for (let i = 0; i < list.length; i++) {
-                            const element = list[i];
-                            if (element.id.get() === this.id.get())
-                                return resolve(element);
-                        }
-                        list.push(this);
-                        resolve(this);
-                    });
-                }
-                else {
-                    organ.add_attr({
-                        entryPoints: new spinal_core_connectorjs_type_1.Ptr(new spinal_core_connectorjs_type_1.Lst([this])),
-                    });
-                    resolve(this);
-                }
-            });
-        });
+        return this.getOrgan().then((organ) => __awaiter(this, void 0, void 0, function* () {
+            if (!organ)
+                return;
+            if (!organ.entryPoints) {
+                organ.add_attr({ entryPoints: new spinal_core_connectorjs_type_1.Ptr(new spinal_core_connectorjs_type_1.Lst([this])) });
+                return organ;
+            }
+            const list = yield (0, utils_1.loadPtr)(organ.entryPoints);
+            // check if already in list
+            for (let i = 0; i < list.length; i++) {
+                const element = list[i];
+                if (element.id.get() === this.id.get())
+                    return element; // already in list
+            }
+            // not in list, add it
+            list.push(this);
+            return this;
+        }));
     }
     removeFromGraph() {
-        return new Promise((resolve, reject) => {
-            this.getOrgan().then((organ) => {
-                if (organ.entryPoints) {
-                    organ.entryPoints.load((list) => {
-                        for (let i = 0; i < list.length; i++) {
-                            const element = list[i];
-                            if (element.id.get() === this.id.get()) {
-                                list.splice(i, 1);
-                                return resolve(true);
-                            }
-                        }
-                        resolve(false);
-                    });
+        return __awaiter(this, void 0, void 0, function* () {
+            const organ = yield (0, utils_1.loadPtr)(this.organ);
+            if (!organ || !organ.entryPoints)
+                return false;
+            const list = yield (0, utils_1.loadPtr)(organ.entryPoints);
+            if (!list)
+                return false;
+            for (let i = 0; i < list.length; i++) {
+                const element = list[i];
+                if (element.id.get() === this.id.get()) {
+                    list.remove(element);
+                    return true;
                 }
-                else {
-                    resolve(false);
-                }
-            });
+            }
+            return false;
         });
     }
 }

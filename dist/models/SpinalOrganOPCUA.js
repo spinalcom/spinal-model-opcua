@@ -25,55 +25,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpinalOrganOPCUA = void 0;
 const spinal_core_connectorjs_type_1 = require("spinal-core-connectorjs_type");
-const uuid_1 = require("uuid");
 const constants_1 = require("../constants");
-class SpinalOrganOPCUA extends spinal_core_connectorjs_type_1.Model {
+const spinal_connector_service_1 = require("spinal-connector-service");
+class SpinalOrganOPCUA extends spinal_connector_service_1.SpinalOrganModel {
     constructor(name, type = constants_1.OPCUA_ORGAN_TYPE) {
-        super();
+        super(name, type);
         if (!name)
             return;
-        this.add_attr({
-            id: (0, uuid_1.v4)(),
-            name,
-            type,
-            references: {},
-            restart: false,
-        });
-    }
-    addReference(contextId, spinalNode) {
-        if (this.references[contextId]) {
-            return new Promise((resolve, reject) => {
-                this.references[contextId].load((e) => {
-                    if (typeof e !== "undefined")
-                        return reject("The organ is already linked to this context");
-                    this.references.mod_attr(contextId, new spinal_core_connectorjs_type_1.Ptr(spinalNode));
-                    resolve(spinalNode);
-                });
-            });
-        }
-        this.references.add_attr({ [contextId]: new spinal_core_connectorjs_type_1.Ptr(spinalNode) });
-        return Promise.resolve(spinalNode);
-    }
-    isReferencedInContext(contextId) {
-        if (typeof this.references[contextId] === "undefined")
-            return Promise.resolve(false);
-        return new Promise((resolve, reject) => {
-            this.references[contextId].load((e) => {
-                if (typeof e === "undefined")
-                    return resolve(false);
-                resolve(true);
-            });
-        });
-    }
-    removeReference(contextId) {
-        if (this.references[contextId]) {
-            return new Promise((resolve, reject) => {
-                this.references[contextId].load((node) => {
-                    this.references.rem_attr(contextId);
-                    resolve(node);
-                });
-            });
-        }
     }
 }
 exports.SpinalOrganOPCUA = SpinalOrganOPCUA;

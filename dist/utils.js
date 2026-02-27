@@ -5,6 +5,7 @@ exports._formatServer = _formatServer;
 exports.convertToBase64 = convertToBase64;
 exports.getPathData = getPathData;
 exports.waitModelReady = waitModelReady;
+exports.loadPtr = loadPtr;
 const axios_1 = require("axios");
 const axios_retry_1 = require("axios-retry");
 function _formatNetwork(network) {
@@ -56,6 +57,16 @@ function waitModelReady(model) {
             };
             wait();
         });
+    });
+}
+function loadPtr(ptr) {
+    return new Promise((resolve, reject) => {
+        try {
+            ptr.load((data) => resolve(data));
+        }
+        catch (error) {
+            reject(error);
+        }
     });
 }
 // export function waitModelReady(model: Str) {

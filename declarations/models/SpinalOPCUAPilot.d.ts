@@ -1,17 +1,9 @@
-import { Model } from 'spinal-core-connectorjs_type';
 import { SpinalNode } from 'spinal-model-graph';
 import { IRequest } from '../interfaces';
-declare class SpinalOPCUAPilot extends Model {
+import { SpinalPilot } from "spinal-connector-service";
+declare class SpinalOPCUAPilot extends SpinalPilot<IRequest> {
     constructor(organ?: SpinalNode, request?: IRequest | IRequest[]);
     setNormalMode(): void;
-    setProcessMode(): void;
-    setSuccessMode(): void;
-    setErrorMode(): void;
-    getOrgan(): Promise<SpinalNode>;
-    addToGraph(endpoint: SpinalNode<any>): Promise<any>;
-    removeFromGraph(): Promise<any>;
-    addToNode(endpoint: SpinalNode<any>): Promise<any>;
-    removeFromNode(): Promise<any>;
 }
 export default SpinalOPCUAPilot;
 export { SpinalOPCUAPilot };
